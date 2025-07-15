@@ -12,10 +12,10 @@ class UInkpotStoryAsset;
 class UInkpotStory;
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPathStartedSignature, FString, PathName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPathStartedSignature, const FString&, PathName);
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPathEndReachedSignature, FString, PathName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPathEndReachedSignature, const FString&, PathName);
 
 UCLASS()
 class AMINUTEOFYOURTIME_API UInkStorySubsystem : public UEngineSubsystem
