@@ -29,8 +29,6 @@ void UDialogueWidgetBase::NativeConstruct()
 	Super::NativeConstruct();
 
 	Hide();
-
-	//LV_Choices->OnEntryWidgetGenerated().AddUFunction(this, "OnEntryGenerated");
 }
 
 FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -140,11 +138,9 @@ void UDialogueWidgetBase::UpdateTextWidget_Implementation(UInkpotStory* Story)
 	{
 		Text_Speaker->SetText(FText::FromString(Tags[0]));
 		SB_SpeakerRoot->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-		// TODO: Speaker settings
 	} else
 	{
 		SB_SpeakerRoot->SetVisibility(ESlateVisibility::Collapsed);
-		// TODO: Speaker Settings
 	}
 
 	ShowLine(CurrentStoryLine->GetText());

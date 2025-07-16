@@ -39,6 +39,21 @@
 		{
 			"Name": "Inkpot",
 			"Enabled": true
+		},
+		{
+			"Name": "WMFCodecs",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "ElectraPlayer",
+			"Enabled": true
+		},
+		{
+			"Name": "ElectraCDM",
+			"Enabled": true
 		}
 	]
 }
