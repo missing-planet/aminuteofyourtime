@@ -37,19 +37,23 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 {
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
+		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+		if (!InkStory) return FReply::Handled();
+
 		if (bIsShowingLine)
 		{
 			LineProgress = CurrentLine.ToString().Len();
 			Text_Dialogue->SetText(CurrentLine);
 			bIsShowingLine = false;
 			Text_Cursor->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+			UpdateChoicesView(InkStory->GetStory());
+
 			return FReply::Handled();
 		} else
 		{
-			UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
-			if (!InkStory) return FReply::Handled();
 
 			if (InkStory->ContinueStory()) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
+			//UpdateChoicesView(InkStory->GetStory());
 
 			return FReply::Handled();
 		}
@@ -70,8 +74,8 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
 		if (!InkStory) return FReply::Handled();
 
-		InkStory->ContinueStory();
-		Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
+		if (InkStory->ContinueStory()) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
+		//UpdateChoicesView(InkStory->GetStory());
 
 		return FReply::Handled();
 	}
@@ -103,7 +107,7 @@ void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 {
 	Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 	UpdateTextWidget(Story);
-	UpdateChoicesView(Story);
+	//UpdateChoicesView(Story);
 }
 
 void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkpotChoice* Choice)
@@ -115,6 +119,7 @@ void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkp
 	if (!InkStory) return;
 
 	InkStory->ContinueStory();
+	UpdateChoicesView(Story);
 }
 
 void UDialogueWidgetBase::OnEntryGenerated_Implementation(UUserWidget* Widget)
