@@ -19,4 +19,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FSpeakerSettings GetSpeakerSettingsFromTag(const UDataTable* SpeakerMap, const FString& Tag);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FPortraitMapping GetPortraitFromTag(const UDataTable* PortraitMap, const FString& Tag);
 };

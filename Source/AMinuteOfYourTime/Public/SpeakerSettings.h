@@ -22,3 +22,12 @@ struct FSpeakerSettings : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 Frequency = 1;
 };
+
+USTRUCT(BlueprintType)
+struct FPortraitMapping : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UTexture2D> Portrait;
+};

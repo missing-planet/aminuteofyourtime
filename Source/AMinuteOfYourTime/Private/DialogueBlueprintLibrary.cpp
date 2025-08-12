@@ -21,3 +21,15 @@ FSpeakerSettings UDialogueBlueprintLibrary::GetSpeakerSettingsFromTag(const UDat
 
 	return FSpeakerSettings();
 }
+
+FPortraitMapping UDialogueBlueprintLibrary::GetPortraitFromTag(const UDataTable* PortraitMap, const FString& Tag)
+{
+	if (!PortraitMap) return FPortraitMapping();
+
+	if (auto Row = PortraitMap->FindRow<FPortraitMapping>(FName(Tag), "Get Portrait"))
+	{
+		return *Row;
+	}
+
+	return FPortraitMapping();
+}
