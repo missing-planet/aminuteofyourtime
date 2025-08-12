@@ -29,6 +29,8 @@ void UDialogueWidgetBase::NativeConstruct()
 	Super::NativeConstruct();
 
 	Hide();
+
+	Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -40,13 +42,14 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 			LineProgress = CurrentLine.ToString().Len();
 			Text_Dialogue->SetText(CurrentLine);
 			bIsShowingLine = false;
+			Text_Cursor->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 			return FReply::Handled();
 		} else
 		{
 			UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
 			if (!InkStory) return FReply::Handled();
 
-			InkStory->ContinueStory();
+			if (InkStory->ContinueStory()) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 
 			return FReply::Handled();
 		}
@@ -68,6 +71,7 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 		if (!InkStory) return FReply::Handled();
 
 		InkStory->ContinueStory();
+		Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 
 		return FReply::Handled();
 	}
@@ -97,6 +101,7 @@ void UDialogueWidgetBase::OnBeginStory_Implementation(UInkpotStory* Story)
 
 void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 {
+	Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 	UpdateTextWidget(Story);
 	UpdateChoicesView(Story);
 }
