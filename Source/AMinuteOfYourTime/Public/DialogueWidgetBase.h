@@ -32,9 +32,9 @@ protected:
 		NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void OnPathStarted(const FString& PathName);
+	void OnPathStarted(const FString& PathName, UObject* CurrentHandler);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void OnPathEndReached(const FString& PathName);
+	void OnPathEndReached(const FString& PathName, UObject* CurrentHandler);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnBeginStory(UInkpotStory* Story);
@@ -101,8 +101,8 @@ private:
 
 private:
 
-	void OnPathStarted_Implementation(const FString& PathName);
-	void OnPathEndReached_Implementation(const FString& PathName);
+	void OnPathStarted_Implementation(const FString& PathName, UObject* CurrentHandler);
+	void OnPathEndReached_Implementation(const FString& PathName, UObject* CurrentHandler);
 
 	void OnBeginStory_Implementation(UInkpotStory* Story);
 	void OnContinue_Implementation(UInkpotStory* Story);

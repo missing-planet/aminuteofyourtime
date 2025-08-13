@@ -68,7 +68,7 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 {
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
-		OnSkipLine();
+		if (bIsShowingLine) OnSkipLine();
 		LineProgress = CurrentLine.ToString().Len();
 		//Text_Dialogue->SetText(CurrentLine);
 		bIsShowingLine = false;
@@ -85,14 +85,18 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 	return FReply::Unhandled();
 }
 
-void UDialogueWidgetBase::OnPathStarted_Implementation(const FString& PathName)
+void UDialogueWidgetBase::OnPathStarted_Implementation(const FString& PathName, UObject* CurrentHandler)
 {
+	if (CurrentHandler != this) return;
+
 	UGameplayStatics::SetGamePaused(this, true);
 	Show();
 }
 
-void UDialogueWidgetBase::OnPathEndReached_Implementation(const FString& PathName)
+void UDialogueWidgetBase::OnPathEndReached_Implementation(const FString& PathName, UObject* CurrentHandler)
 {
+	if (CurrentHandler != this) return;
+
 	Hide();
 	UGameplayStatics::SetGamePaused(this, false);
 }

@@ -22,7 +22,7 @@ bool UInkStorySubsystem::ContinueStory()
 
 	if (!Story->CanContinue() && !Story->HasChoices())
 	{
-		PathEndReachedEvent.Broadcast(CurrentPath);
+		PathEndReachedEvent.Broadcast(CurrentPath, CurrentStoryHandler.Get());
 		CurrentPath = "";
 
 		return false;
@@ -57,7 +57,7 @@ void UInkStorySubsystem::StartPath(const FString& Path)
 	Story->ChoosePath(Path);
 	CurrentPath = Path;
 
-	PathStartedEvent.Broadcast(Path);
+	PathStartedEvent.Broadcast(Path, CurrentStoryHandler.Get());
 }
 
 void UInkStorySubsystem::StartPathWithParameters(const FString& Path, const TArray<FInkpotValue>& Params)
@@ -67,5 +67,5 @@ void UInkStorySubsystem::StartPathWithParameters(const FString& Path, const TArr
 	Story->ChoosePathString(Path, Params);
 	CurrentPath = Path;
 
-	PathStartedEvent.Broadcast(Path);
+	PathStartedEvent.Broadcast(Path, CurrentStoryHandler.Get());
 }

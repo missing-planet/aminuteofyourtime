@@ -12,10 +12,10 @@ class UInkpotStoryAsset;
 class UInkpotStory;
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPathStartedSignature, const FString&, PathName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPathStartedSignature, const FString&, PathName, UObject*, CurrentHandler);
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPathEndReachedSignature, const FString&, PathName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPathEndReachedSignature, const FString&, PathName, UObject*, CurrentHandler);
 
 UCLASS()
 class AMINUTEOFYOURTIME_API UInkStorySubsystem : public UEngineSubsystem
@@ -45,6 +45,18 @@ public:
 	UFUNCTION(BlueprintPure)
 	UInkpotStory* GetStory() const { return Story; }
 
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentStoryHandler(UObject* Handler) { CurrentStoryHandler = Handler; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UObject* GetCurrentStoryHandler() const { return CurrentStoryHandler.Get(); }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DeterminesOutputType = "InType"))
+	UObject* GetCurrentStoryHandlerAs(TSubclassOf<UObject> InType) const
+	{
+		return CurrentStoryHandler.Get();
+	}
+
 public:
 
 	UPROPERTY(BlueprintAssignable)
@@ -60,4 +72,7 @@ private:
 
 	UPROPERTY()
 	FString CurrentPath;
+
+	UPROPERTY()
+	TObjectPtr<UObject> CurrentStoryHandler;
 };
