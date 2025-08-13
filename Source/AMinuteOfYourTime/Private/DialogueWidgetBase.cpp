@@ -38,7 +38,7 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
 		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
-		if (!InkStory) return FReply::Handled();
+		if (!InkStory || !bAllowSkip) return FReply::Unhandled();
 
 		if (bIsShowingLine)
 		{
@@ -68,6 +68,8 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 {
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
+		if (!bAllowSkip) return FReply::Unhandled();
+
 		if (bIsShowingLine) OnSkipLine();
 		LineProgress = CurrentLine.ToString().Len();
 		//Text_Dialogue->SetText(CurrentLine);

@@ -69,6 +69,8 @@ protected:
 	int32 LineProgress = 0;
 	UPROPERTY(BlueprintReadWrite)
 	bool bIsShowingLine = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool bAllowSkip = true;
 
 	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> CursorAnimation;
