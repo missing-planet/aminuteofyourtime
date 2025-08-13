@@ -42,8 +42,9 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 
 		if (bIsShowingLine)
 		{
+			OnSkipLine();
 			LineProgress = CurrentLine.ToString().Len();
-			Text_Dialogue->SetText(CurrentLine);
+			//Text_Dialogue->SetText(CurrentLine);
 			bIsShowingLine = false;
 			Text_Cursor->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 			UpdateChoicesView(InkStory->GetStory());
@@ -67,8 +68,9 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 {
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
+		OnSkipLine();
 		LineProgress = CurrentLine.ToString().Len();
-		Text_Dialogue->SetText(CurrentLine);
+		//Text_Dialogue->SetText(CurrentLine);
 		bIsShowingLine = false;
 
 		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();

@@ -56,6 +56,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ShowLine(const FText& Line);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnSkipLine();
+
 protected:
 
 	UPROPERTY(BlueprintReadWrite)
