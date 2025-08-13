@@ -28,4 +28,10 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	int32 GetChoiceIndex();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetChoiceParent(UWidget* Parent);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Reset();
 };

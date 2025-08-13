@@ -127,8 +127,10 @@ void UDialogueWidgetBase::OnEntryGenerated_Implementation(UUserWidget* Widget)
 	auto& EntryWidgets = LV_Choices->GetDisplayedEntryWidgets();
 	int32 Index = EntryWidgets.Find(Widget);
 
+	IStoryChoiceInterface::Execute_Reset(Widget);
 	IStoryChoiceInterface::Execute_SetText(Widget, CachedStory->GetCurrentChoices()[Index]->GetText());
 	IStoryChoiceInterface::Execute_SetChoiceIndex(Widget, Index);
+	IStoryChoiceInterface::Execute_SetChoiceParent(Widget, LV_Choices.Get());
 }
 
 void UDialogueWidgetBase::OnChoiceClicked_Implementation(int32 ChoiceIndex)
