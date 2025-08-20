@@ -40,22 +40,3 @@ FEventDescriptionRow UBlueprintEventFunctionLibrary::GetEventForTime(const UData
 
 	return FEventDescriptionRow();
 }
-
-UWidget* UBlueprintEventFunctionLibrary::GetHUDWidget(TSubclassOf<UUserWidget> WidgetClass, UObject* WorldContext)
-{
-	static TMap<TSubclassOf<UUserWidget>, UWidget*> CachedWidgets;
-
-	if (CachedWidgets.Contains(WidgetClass)) return CachedWidgets[WidgetClass];
-
-	TArray<UUserWidget*> FoundWidgets;
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(WorldContext, FoundWidgets, WidgetClass, false);
-
-	if (!FoundWidgets.IsEmpty())
-	{
-		CachedWidgets.Add(WidgetClass, Cast<UWidget>(FoundWidgets[0]));
-		return CachedWidgets[WidgetClass];
-	}
-
-	UE_LOG(LogTemp, Error, TEXT("No valid widget found!"));
-	return nullptr;
-}

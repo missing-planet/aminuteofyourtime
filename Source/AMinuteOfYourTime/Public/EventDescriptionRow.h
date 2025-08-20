@@ -41,7 +41,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FEventDescriptionRow GetEventForTime(const UDataTable* EventData, FDateTimePair DateTime);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DeterminesOutputType="WidgetClass"))
-	static UWidget* GetHUDWidget(TSubclassOf<UUserWidget> WidgetClass, UObject* WorldContext);
 };

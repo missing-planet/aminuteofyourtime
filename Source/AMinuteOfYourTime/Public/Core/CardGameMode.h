@@ -8,9 +8,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "CardGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class AMINUTEOFYOURTIME_API ACardGameMode : public AGameModeBase
 {

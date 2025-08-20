@@ -19,6 +19,9 @@ class IStoryEventInterface
 
 public:
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Execute(FEventDescriptionRow EventDescription, UObject* Caller);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnPathEndReached(const FString& PathName, UObject* CurrentHandler);
 };
