@@ -41,6 +41,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	int32 GetCurrentDay() const;
 
+	UFUNCTION(BlueprintPure)
+	FDateTimePair GetCurrentDateTime() const { return FDateTimePair(CurrentTime, CurrentDay); }
+
 public:
 
 	UPROPERTY(BlueprintAssignable)

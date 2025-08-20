@@ -2,8 +2,10 @@
 
 #pragma once
 
+#include <Components/Widget.h>
+
 #include "CoreMinimal.h"
-#include "StoryEvent.h"
+#include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Timeslot.h"
 #include "EventDescriptionRow.generated.h"
 
@@ -25,7 +27,7 @@ struct FEventDescriptionRow : public FTableRowBase
 	FSlateBrush EventImage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UStoryEvent> EventClass;
+	TSubclassOf<UObject> EventClass;
 };
 
 UCLASS()
@@ -35,5 +37,11 @@ class UBlueprintEventFunctionLibrary : public UBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static UStoryEvent* GetEvent(const FEventDescriptionRow& EventDescription);
+	static UObject* GetEvent(const FEventDescriptionRow& EventDescription, bool& Result);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FEventDescriptionRow GetEventForTime(const UDataTable* EventData, FDateTimePair DateTime);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DeterminesOutputType="WidgetClass"))
+	static UWidget* GetHUDWidget(TSubclassOf<UUserWidget> WidgetClass, UObject* WorldContext);
 };
