@@ -1,12 +1,19 @@
 
 == TestKnot 
     This is a bit of test dialogue. # Unknown
-    How are you doing today? # Advocate # Advocate
+    I am the Devil's Advocate. # Unknown # Advocate
+    How are you doing today? # Advocate 
         * [I am doing well.]
-            That is good.
+            That is good. # Advocate 
         * [Bad.]
-            That's too bad.
-    - I see. Well I hope the rest of your day goes well. # Default # Hidden
+            That's too bad. # Advocate 
+    - And how are you feeling? # Advocate 
+        * [Good.]
+            That is good. # Advocate 
+        * [Bad.]
+            That's too bad. # Advocate 
+    - I see. Well I hope the rest of your day goes well. # Advocate
+    I am going to take my leave now. #Advocate
     -> DONE
     
 == TestEvent

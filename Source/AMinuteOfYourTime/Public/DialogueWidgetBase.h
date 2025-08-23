@@ -45,8 +45,6 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnEntryGenerated(UUserWidget* Widget);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void OnChoiceClicked(int32 ChoiceIndex);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void UpdateTextWidget(UInkpotStory* Story);
@@ -111,7 +109,6 @@ private:
 	void OnMakeChoice_Implementation(UInkpotStory* Story, UInkpotChoice* Choice);
 
 	void OnEntryGenerated_Implementation(UUserWidget* Widget);
-	void OnChoiceClicked_Implementation(int32 ChoiceIndex);
 
 	void UpdateTextWidget_Implementation(UInkpotStory* Story);
 	bool UpdateChoicesView_Implementation(UInkpotStory* Story);

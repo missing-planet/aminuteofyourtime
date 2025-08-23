@@ -44,7 +44,6 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 		{
 			OnSkipLine();
 			LineProgress = CurrentLine.ToString().Len();
-			//Text_Dialogue->SetText(CurrentLine);
 			bIsShowingLine = false;
 			Text_Cursor->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 			UpdateChoicesView(InkStory->GetStory());
@@ -52,9 +51,7 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 			return FReply::Handled();
 		} else
 		{
-
 			if (InkStory->ContinueStory()) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
-			//UpdateChoicesView(InkStory->GetStory());
 
 			return FReply::Handled();
 		}
@@ -72,14 +69,12 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDoubleClick(const FGeometry& InGe
 
 		if (bIsShowingLine) OnSkipLine();
 		LineProgress = CurrentLine.ToString().Len();
-		//Text_Dialogue->SetText(CurrentLine);
 		bIsShowingLine = false;
 
 		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
 		if (!InkStory) return FReply::Handled();
 
 		if (InkStory->ContinueStory()) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
-		//UpdateChoicesView(InkStory->GetStory());
 
 		return FReply::Handled();
 	}
@@ -113,9 +108,9 @@ void UDialogueWidgetBase::OnBeginStory_Implementation(UInkpotStory* Story)
 
 void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 {
+	UE_LOG(LogTemp, Warning, TEXT("ON CONTINUE C++"));
 	Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 	UpdateTextWidget(Story);
-	//UpdateChoicesView(Story);
 }
 
 void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkpotChoice* Choice)
@@ -123,10 +118,6 @@ void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkp
 	LineProgress = 0;
 	bIsShowingLine = false;
 
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
-	if (!InkStory) return;
-
-	InkStory->ContinueStory();
 	UpdateChoicesView(Story);
 }
 
@@ -139,14 +130,6 @@ void UDialogueWidgetBase::OnEntryGenerated_Implementation(UUserWidget* Widget)
 	IStoryChoiceInterface::Execute_SetText(Widget, CachedStory->GetCurrentChoices()[Index]->GetText());
 	IStoryChoiceInterface::Execute_SetChoiceIndex(Widget, Index);
 	IStoryChoiceInterface::Execute_SetChoiceParent(Widget, LV_Choices.Get());
-}
-
-void UDialogueWidgetBase::OnChoiceClicked_Implementation(int32 ChoiceIndex)
-{
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
-	if (!InkStory) return;
-
-	InkStory->MakeChoiceIndex(ChoiceIndex);
 }
 
 void UDialogueWidgetBase::UpdateTextWidget_Implementation(UInkpotStory* Story)
