@@ -45,6 +45,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	UInkpotStory* GetStory() const { return Story; }
 
+	UFUNCTION(BlueprintPure)
+	FString GetCurrentPath() const { return CurrentPath; }
+
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentStoryHandler(UObject* Handler) { CurrentStoryHandler = Handler; }
 

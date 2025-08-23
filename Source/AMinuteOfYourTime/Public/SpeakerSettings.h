@@ -29,5 +29,5 @@ struct FPortraitMapping : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TObjectPtr<UTexture2D> Portrait;
+	FSlateBrush Portrait;
 };

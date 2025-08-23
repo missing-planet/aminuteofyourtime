@@ -57,6 +57,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnSkipLine();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void HandleTag(const FString& Tag);
+
 protected:
 
 	UPROPERTY(BlueprintReadWrite)

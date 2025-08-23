@@ -1,19 +1,19 @@
 
 == TestKnot 
-    This is a bit of test dialogue. # Unknown
-    I am the Devil's Advocate. # Unknown # Advocate
-    How are you doing today? # Advocate 
+    This is a bit of test dialogue. # name:Unknown
+    I am the Devil's Advocate. # sprite:Advocate #bg:Rectangles
+    How are you doing today? # name:Advocate 
         * [I am doing well.]
-            That is good. # Advocate 
+            That is good.
         * [Bad.]
-            That's too bad. # Advocate 
-    - And how are you feeling? # Advocate 
+            That's too bad.
+    - And how are you feeling? 
         * [Good.]
-            That is good. # Advocate 
+            That is good.
         * [Bad.]
-            That's too bad. # Advocate 
-    - I see. Well I hope the rest of your day goes well. # Advocate
-    I am going to take my leave now. #Advocate
+            That's too bad.
+    - I see. Well I hope the rest of your day goes well.
+    I am going to take my leave now. # bg:Hidden
     -> DONE
     
 == TestEvent

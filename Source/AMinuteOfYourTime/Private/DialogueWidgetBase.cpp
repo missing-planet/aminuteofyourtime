@@ -108,9 +108,17 @@ void UDialogueWidgetBase::OnBeginStory_Implementation(UInkpotStory* Story)
 
 void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 {
-	UE_LOG(LogTemp, Warning, TEXT("ON CONTINUE C++"));
 	Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 	UpdateTextWidget(Story);
+
+
+	if (Story->GetCurrentText().IsEmpty())
+	{
+		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+		if (!InkStory) return;
+
+		if (InkStory->GetCurrentPath() != "INVALID") InkStory->ContinueStory();
+	}
 }
 
 void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkpotChoice* Choice)
@@ -137,13 +145,9 @@ void UDialogueWidgetBase::UpdateTextWidget_Implementation(UInkpotStory* Story)
 	UInkpotLine* CurrentStoryLine = Story->GetCurrentLine();
 	auto& Tags = CurrentStoryLine->GetTags();
 
-	if (!Tags.IsEmpty())
+	for (const auto& Tag : Tags)
 	{
-		Text_Speaker->SetText(FText::FromString(Tags[0]));
-		SB_SpeakerRoot->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-	} else
-	{
-		SB_SpeakerRoot->SetVisibility(ESlateVisibility::Collapsed);
+		HandleTag(Tag);
 	}
 
 	ShowLine(CurrentStoryLine->GetText());
