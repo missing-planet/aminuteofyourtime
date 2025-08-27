@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetAutoWrap(bool bAutoWrap);
 
+	UFUNCTION(BlueprintCallable)
+	void SetDefaultStyle(const FName& NewDefault);
+
 protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

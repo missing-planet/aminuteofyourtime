@@ -27,3 +27,10 @@
         * [The second option] -> DONE
         * [The evil third option]
     -> DONE
+    
+== IconTest
+    Followed a strange squealing to the uncanny underpass of Limbo. Two naked, sexless husks flop against each other atop an exhausted pile of other followers.
+    <img id="Icon1"/> FOR LOVE! FOR LOVE!
+    <img id="Icon2"/> FOR LOVE! FOR LOVE!
+    <img id="CardBack"/> gained ADVANCED KNOWLEDGE
+    -> DONE

@@ -3,6 +3,16 @@
 
 #include "CustomTextNativeBase.h"
 
+void UCustomTextNativeBase::SetDefaultStyle(const FName& NewDefault)
+{
+	if (!TextElement) return;
+
+	if (auto* Row = TextElement->GetTextStyleSet()->FindRow<FRichTextStyleRow>(NewDefault, "SetDefaultStyle"))
+	{
+		TextElement->SetDefaultTextStyle(Row->TextStyle);
+	}
+}
+
 void UCustomTextNativeBase::SetText_Implementation(const FText& InText)
 {
 	if (!TextElement) return;
