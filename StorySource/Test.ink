@@ -1,6 +1,6 @@
 
 == TestKnot 
-    This is a bit of test dialogue. # name:Unknown
+    This is a bit of <Jiggle>test</> dialogue. # name:Unknown
     I am the Devil's Advocate. # sprite:Advocate #bg:Rectangles
     How are you doing today? # name:Advocate 
         * [I am doing well.]
