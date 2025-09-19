@@ -14,10 +14,11 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 	{
 		// Create a new object so that the original data asset can't be modified
 		// Use deck name and index to prevent caching, we want a new card object for every card
-		UCardDataBase* newCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
+		UCardDataBase* NewCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
 			FName(*FString(card->CardName.ToString() + "_" + Name.ToString() + "_" + FString::FromInt(i++))),
 			RF_NoFlags, card);
-		Cards.Enqueue(newCard);
+		NewCard->OwningDeck = this;
+		Cards.Enqueue(NewCard);
 	}
 
 	if (Shuffle) this->Shuffle();

@@ -8,6 +8,8 @@
 #include "Engine/DataAsset.h"
 #include "CardDataBase.generated.h"
 
+class UDeckObjectBase;
+
 UCLASS(DisplayName="Card Data Base", Blueprintable, BlueprintType)
 class AMINUTEOFYOURTIME_API UCardDataBase : public UPrimaryDataAsset
 {
@@ -31,6 +33,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DestroyChance;
+
+	UPROPERTY(BlueprintReadWrite)
+	UDeckObjectBase* OwningDeck = nullptr;
 
 	/*UPROPERTY(EditAnywhere)
 	FGameplayTagContainer CardFlags;*/

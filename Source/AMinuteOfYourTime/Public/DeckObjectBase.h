@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetDiscardDeck(UDeckObjectBase* Discard) { DiscardDeck = Discard; }
 
+	UFUNCTION(BlueprintCallable)
+	UDeckObjectBase* GetDiscardDeck() const { return DiscardDeck; }
+
 	// Returns actual number of cards drawn, in the case that the deck has less than Count
 	UFUNCTION(BlueprintCallable)
 	int DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange = false);
