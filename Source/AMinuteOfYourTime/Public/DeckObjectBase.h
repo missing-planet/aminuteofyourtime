@@ -42,7 +42,7 @@ public:
 
 private:
 
-	TQueue<UCardDataBase*> Cards;
-
 	int32 CardCount = 0;
+
+	TQueue<UCardDataBase*> Cards;
 };
