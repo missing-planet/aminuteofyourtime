@@ -3,15 +3,21 @@
 
 #include "DeckObjectBase.h"
 
-#include "CardBase.h"
+#include "CardDataBase.h"
 
 void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuffle)
 {
 	DeckName = Name;
 
-	for (UCardBase* card : DeckData->CardList)
+	uint32 i = 0;
+	for (UCardDataBase* card : DeckData->CardList)
 	{
-		Cards.Enqueue(std::move(card));
+		// Create a new object so that the original data asset can't be modified
+		// Use deck name and index to prevent caching, we want a new card object for every card
+		UCardDataBase* newCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
+			FName(*FString(card->CardName.ToString() + "_" + Name.ToString() + "_" + FString::FromInt(i++))),
+			RF_NoFlags, card);
+		Cards.Enqueue(newCard);
 	}
 
 	if (Shuffle) this->Shuffle();
@@ -21,7 +27,7 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 	DeckCountChangeEvent.Broadcast(DeckData->CardList.Num());
 }
 
-int UDeckObjectBase::DrawCards(int Count, TArray<UCardBase*>& OutCardList, bool BroadcastChange)
+int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange)
 {
 	int ReturnCount = 0;
 
@@ -29,7 +35,7 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardBase*>& OutCardList, bool 
 	{
 		if (Cards.IsEmpty()) break;
 
-		UCardBase* Card = nullptr;
+		UCardDataBase* Card = nullptr;
 		Cards.Peek(Card);
 		Cards.Pop();
 		OutCardList.Add(std::move(Card));
@@ -43,7 +49,7 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardBase*>& OutCardList, bool 
 	return ReturnCount;
 }
 
-void UDeckObjectBase::AddCard(UCardBase* Card)
+void UDeckObjectBase::AddCard(UCardDataBase* Card)
 {
 	Cards.Enqueue(std::move(Card));
 
@@ -51,9 +57,9 @@ void UDeckObjectBase::AddCard(UCardBase* Card)
 	DeckCountChangeEvent.Broadcast(1);
 }
 
-void UDeckObjectBase::AddCards(const TArray<UCardBase*>& CardList)
+void UDeckObjectBase::AddCards(const TArray<UCardDataBase*>& CardList)
 {
-	for (UCardBase* card : CardList)
+	for (UCardDataBase* card : CardList)
 	{
 		AddCard(card);
 	}
@@ -61,11 +67,11 @@ void UDeckObjectBase::AddCards(const TArray<UCardBase*>& CardList)
 
 void UDeckObjectBase::Shuffle()
 {
-	TArray<UCardBase*> CardList;
+	TArray<UCardDataBase*> CardList;
 
 	while (!Cards.IsEmpty())
 	{
-		UCardBase* Card = nullptr;
+		UCardDataBase* Card = nullptr;
 		Cards.Dequeue(Card);
 		CardList.Add(std::move(Card));
 	}

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CardBase.h"
+#include "CardDataBase.h"
 #include "UObject/Interface.h"
 #include "CardInterface.generated.h"
 
@@ -42,11 +42,11 @@ class IPlayerHandInterface
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void AddCard(UCardBase* Card, FVector2D DrawLocation);
+	void AddCard(UCardDataBase* Card, FVector2D DrawLocation);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void AddCards(const TArray<UCardBase*>& Cards, FVector2D DrawLocation);
+	void AddCards(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void RemoveCard(UCardBase* Card);
+	void RemoveCard(UCardDataBase* Card);
 };

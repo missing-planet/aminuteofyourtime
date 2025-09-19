@@ -6,10 +6,10 @@
 #include "CardType.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
-#include "CardBase.generated.h"
+#include "CardDataBase.generated.h"
 
 UCLASS(DisplayName="Card Data Base", Blueprintable, BlueprintType)
-class AMINUTEOFYOURTIME_API UCardBase : public UPrimaryDataAsset
+class AMINUTEOFYOURTIME_API UCardDataBase : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
@@ -20,10 +20,10 @@ public:
 	}
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 ActionPointCost;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText CardName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

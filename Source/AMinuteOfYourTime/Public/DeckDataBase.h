@@ -7,7 +7,7 @@
 #include "Templates/SharedPointer.h"
 #include "DeckDataBase.generated.h"
 
-class UCardBase;
+class UCardDataBase;
 class UDeckDataBase;
 
 UCLASS(DisplayName="Deck Data Base", Blueprintable, BlueprintType)
@@ -24,5 +24,5 @@ public:
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<UCardBase*> CardList;
+	TArray<UCardDataBase*> CardList;
 };

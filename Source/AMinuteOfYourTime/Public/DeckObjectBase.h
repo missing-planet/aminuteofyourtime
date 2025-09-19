@@ -32,17 +32,17 @@ public:
 	int32 GetCardCount() const { return CardCount; }
 
 	// Returns actual number of cards drawn, in the case that the deck has less than Count
-	int DrawCards(int Count, TArray<UCardBase*>& OutCardList, bool BroadcastChange = false);
+	int DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange = false);
 
-	void AddCard(UCardBase* Card);
+	void AddCard(UCardDataBase* Card);
 
-	void AddCards(const TArray<UCardBase*>& CardList);
+	void AddCards(const TArray<UCardDataBase*>& CardList);
 
 	void Shuffle();
 
 private:
 
-	TQueue<UCardBase*> Cards;
+	TQueue<UCardDataBase*> Cards;
 
 	int32 CardCount = 0;
 };

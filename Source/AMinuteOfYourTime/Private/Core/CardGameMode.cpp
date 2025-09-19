@@ -7,7 +7,7 @@ int32 ACardGameMode::DrawCardsToHand(
 	UDeckObjectBase* Deck, TScriptInterface<IPlayerHandInterface> Hand,
 	FVector2D DrawLocation, int32 Count, float Delay)
 {
-	TArray<UCardBase*> Cards;
+	TArray<UCardDataBase*> Cards;
 
 	int32 InitialCount = Deck->GetCardCount();
 
@@ -16,7 +16,7 @@ int32 ACardGameMode::DrawCardsToHand(
 		FTimerHandle Handle;
 		GetWorldTimerManager().SetTimer(Handle, [Deck, Hand, Cards, DrawLocation]()
 			{
-				Deck->DrawCards(1, const_cast<TArray<UCardBase*>&>(Cards));
+				Deck->DrawCards(1, const_cast<TArray<UCardDataBase*>&>(Cards));
 				Deck->DeckCountChangeEvent.Broadcast(Deck->GetCardCount());
 				IPlayerHandInterface::Execute_AddCard(Hand.GetObject(), Cards.Last(), DrawLocation);
 			}, 0.001f, false, Delay * i);
