@@ -32,16 +32,22 @@ public:
 	int32 GetCardCount() const { return CardCount; }
 
 	// Returns actual number of cards drawn, in the case that the deck has less than Count
+	UFUNCTION(BlueprintCallable)
 	int DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange = false);
 
+	UFUNCTION(BlueprintCallable)
 	void AddCard(UCardDataBase* Card);
 
+	UFUNCTION(BlueprintCallable)
 	void AddCards(const TArray<UCardDataBase*>& CardList);
 
+	UFUNCTION(BlueprintCallable)
 	void Shuffle();
 
+	UFUNCTION(BlueprintCallable)
 	void LockDeck(bool Lock) { bDeckLocked = Lock; }
 
+	UFUNCTION(BlueprintCallable)
 	bool IsDeckLocked() const { return bDeckLocked; }
 
 private:
