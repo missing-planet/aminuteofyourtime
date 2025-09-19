@@ -31,6 +31,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetCardCount() const { return CardCount; }
 
+	UFUNCTION(BlueprintCallable)
+	int32 GetTotalCardCount() const { return CardCount + OutOfDeckCards.Num(); }
+
+	UFUNCTION(BlueprintCallable)
+	void SetDiscardDeck(UDeckObjectBase* Discard) { DiscardDeck = Discard; }
+
 	// Returns actual number of cards drawn, in the case that the deck has less than Count
 	UFUNCTION(BlueprintCallable)
 	int DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange = false);
@@ -57,4 +63,10 @@ private:
 	bool bDeckLocked = false;
 
 	TQueue<UCardDataBase*> Cards;
+
+	UPROPERTY()
+	TArray<UCardDataBase*> OutOfDeckCards;
+
+	UPROPERTY()
+	TObjectPtr<UDeckObjectBase> DiscardDeck;
 };

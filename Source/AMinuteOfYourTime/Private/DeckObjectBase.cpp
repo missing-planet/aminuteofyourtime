@@ -33,12 +33,25 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, b
 
 	for (int i = 0; i < Count; ++i)
 	{
-		if (Cards.IsEmpty()) break;
+		if (Cards.IsEmpty())
+		{
+			if (!DiscardDeck) break;
+
+			TArray<UCardDataBase*> DiscardedCards;
+			int32 Amount = DiscardDeck->DrawCards(DiscardDeck->GetCardCount(), DiscardedCards, false);
+			DiscardDeck->DeckCountChangeEvent.Broadcast(Amount);
+			AddCards(DiscardedCards);
+			Shuffle();
+		}
 
 		UCardDataBase* Card = nullptr;
 		Cards.Peek(Card);
 		Cards.Pop();
-		OutCardList.Add(std::move(Card));
+
+		if (!Card) continue;
+		
+		OutCardList.Add(Card);
+		OutOfDeckCards.Add(Card);
 		ReturnCount++;
 
 		CardCount--;
@@ -51,7 +64,10 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, b
 
 void UDeckObjectBase::AddCard(UCardDataBase* Card)
 {
-	Cards.Enqueue(std::move(Card));
+	if (!Card) return;
+	
+	Cards.Enqueue(Card);
+	if (OutOfDeckCards.Contains(Card)) OutOfDeckCards.Remove(Card);
 
 	CardCount++;
 	DeckCountChangeEvent.Broadcast(1);
