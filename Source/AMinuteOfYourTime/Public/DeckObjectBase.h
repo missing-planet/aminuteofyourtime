@@ -40,9 +40,15 @@ public:
 
 	void Shuffle();
 
+	void LockDeck(bool Lock) { bDeckLocked = Lock; }
+
+	bool IsDeckLocked() const { return bDeckLocked; }
+
 private:
 
 	int32 CardCount = 0;
+
+	bool bDeckLocked = false;
 
 	TQueue<UCardDataBase*> Cards;
 };
