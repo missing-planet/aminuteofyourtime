@@ -5,6 +5,7 @@
 #include <Components/Widget.h>
 
 #include "CoreMinimal.h"
+#include "EventType.h"
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Timeslot.h"
 #include "EventDescriptionRow.generated.h"
@@ -21,6 +22,12 @@ struct FEventDescriptionRow : public FTableRowBase
 	FText EventDescription;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName EventID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EventType EventType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FDateTimePair> EventTimes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -28,6 +35,11 @@ struct FEventDescriptionRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<UObject> EventClass;
+
+	bool operator==(const FEventDescriptionRow& other) const
+	{
+		return other.EventID == EventID;
+	}
 };
 
 UCLASS()
@@ -41,4 +53,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FEventDescriptionRow GetEventForTime(const UDataTable* EventData, FDateTimePair DateTime);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static TArray<FEventDescriptionRow> GetEventsForTime(const UDataTable* EventData, FDateTimePair DateTime);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static TArray<EventType> GetUniqueEventTypes(const TArray<FEventDescriptionRow>& Events);
 };

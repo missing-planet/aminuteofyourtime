@@ -40,3 +40,35 @@ FEventDescriptionRow UBlueprintEventFunctionLibrary::GetEventForTime(const UData
 
 	return FEventDescriptionRow();
 }
+
+TArray<FEventDescriptionRow> UBlueprintEventFunctionLibrary::GetEventsForTime(const UDataTable* EventData,
+	FDateTimePair DateTime)
+{
+	if (!EventData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Null Event table passed to GetEventForTime!"));
+		return {};
+	}
+
+	TArray<FEventDescriptionRow*> OutRows;
+	TArray<FEventDescriptionRow> Result;
+	EventData->GetAllRows<FEventDescriptionRow>(FString("Get Event For Time"), OutRows);
+	for (FEventDescriptionRow* Row : OutRows)
+	{
+		if (Row && (Row->EventTimes.IsEmpty() || Row->EventTimes.Contains(DateTime)))
+			Result.AddUnique(*Row);
+	}
+
+	return Result;
+}
+
+TArray<EventType> UBlueprintEventFunctionLibrary::GetUniqueEventTypes(const TArray<FEventDescriptionRow>& Events)
+{
+	TArray<EventType> Result;
+	for (const FEventDescriptionRow& Row : Events)
+	{
+		Result.AddUnique(Row.EventType);
+	}
+
+	return Result;
+}
