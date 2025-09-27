@@ -26,6 +26,12 @@ public:
 	int32 ActionPointCost;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ActionPointOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ActionPointMultiplier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText CardName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

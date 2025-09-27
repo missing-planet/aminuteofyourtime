@@ -25,13 +25,13 @@ struct FEventDescriptionRow : public FTableRowBase
 	FName EventID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	EventType EventType;
+	EventType EventType = EventType::Other;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FDateTimePair> EventTimes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FSlateBrush EventImage;
+	FSlateBrush EventImage = FSlateBrush();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<UObject> EventClass;

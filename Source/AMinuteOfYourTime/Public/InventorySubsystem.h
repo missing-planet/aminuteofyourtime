@@ -19,7 +19,7 @@ struct FInventoryItem : public FTableRowBase
 	FText ItemDescription;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UMaterialInterface* Material;
+	UMaterialInterface* Material = nullptr;
 
 	bool operator==(const FInventoryItem& other) const
 	{

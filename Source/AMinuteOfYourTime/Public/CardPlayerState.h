@@ -31,7 +31,7 @@ public:
 	int32 ActionPoints = 3;
 
 	UPROPERTY(BlueprintReadWrite)
-	int32 MaxActionPoints = 3;
+	int32 MaxActionPoints = 12;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FHandChangedSignature HandChangedEvent;
