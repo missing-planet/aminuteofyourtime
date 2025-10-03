@@ -307,7 +307,10 @@ void UDialogueWidgetBase::OnPathEndReached_Implementation(const FString& PathNam
 	if (CurrentHandler != this) return;
 
 	Hide();
-	//UGameplayStatics::SetGamePaused(this, false);
+	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	if (!InkStory) return;
+
+	InkStory->EventEndReachedEvent.Broadcast(InkStory->GetCurrentPath(), InkStory->GetCurrentStoryHandler());
 }
 
 void UDialogueWidgetBase::OnBeginStory_Implementation(UInkpotStory* Story)

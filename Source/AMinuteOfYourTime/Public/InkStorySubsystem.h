@@ -68,6 +68,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FPathStartedSignature PathStartedEvent;
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FPathEndReachedSignature EventEndReachedEvent;
+
 private:
 
 	UPROPERTY()
