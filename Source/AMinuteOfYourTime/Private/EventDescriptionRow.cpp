@@ -93,3 +93,16 @@ TMap<EventType, float> UBlueprintEventFunctionLibrary::GetEventProbabilitiesForD
 	UE_LOG(LogTemp, Error, TEXT("No overridden probabilities for Day %i found!"), DateTime.Day);
 	return {};
 }
+
+TArray<FEventDescriptionRow> UBlueprintEventFunctionLibrary::FilterEventsByType(
+	const TArray<FEventDescriptionRow>& Events, EventType Type)
+{
+	TArray<FEventDescriptionRow> Result;
+
+	for (const FEventDescriptionRow& Row : Events)
+	{
+		if (Row.EventType == Type) Result.Add(Row);
+	}
+
+	return Result;
+}
