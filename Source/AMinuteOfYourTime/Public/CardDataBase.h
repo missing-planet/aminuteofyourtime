@@ -29,7 +29,7 @@ public:
 	int32 ActionPointOffset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 ActionPointMultiplier;
+	int32 ActionPointMultiplier = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText CardName;
