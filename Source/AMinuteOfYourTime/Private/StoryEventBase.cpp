@@ -21,5 +21,5 @@ void UStoryEventBase::OnPathEndReached_Implementation(const FString& PathName, U
 	UTimeSubsystem* TimeSubsystem = GEngine->GetEngineSubsystem<UTimeSubsystem>();
 	if (!TimeSubsystem) return;
 
-	TimeSubsystem->IncreaseTime();
+	TimeSubsystem->IncreaseDay();
 }
