@@ -59,4 +59,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static TArray<EventType> GetUniqueEventTypes(const TArray<FEventDescriptionRow>& Events);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static TMap<EventType, float> GetEventProbabilitiesForDay(const UDataTable* EventData, const FDateTimePair& DateTime);
 };

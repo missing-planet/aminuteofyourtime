@@ -2,6 +2,8 @@
 
 
 #include "EventDescriptionRow.h"
+
+#include "EventProbabilityRow.h"
 #include "StoryEventInterface.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
@@ -71,4 +73,23 @@ TArray<EventType> UBlueprintEventFunctionLibrary::GetUniqueEventTypes(const TArr
 	}
 
 	return Result;
+}
+
+TMap<EventType, float> UBlueprintEventFunctionLibrary::GetEventProbabilitiesForDay(const UDataTable* EventData, const FDateTimePair& DateTime)
+{
+	if (!EventData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Null Event table passed to GetEventProbabilitiesForDay!"));
+		return {};
+	}
+
+	TArray<FEventProbabilityRow*> OutRows;
+	EventData->GetAllRows<FEventProbabilityRow>(FString("Get Event Probabilities"), OutRows);
+	for (FEventProbabilityRow* Row : OutRows)
+	{
+		if (Row && Row->Timeslot.Day == DateTime.Day) return Row->Probabilities;
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("No overridden probabilities for Day %i found!"), DateTime.Day);
+	return {};
 }
