@@ -10,6 +10,13 @@ void ACardPlayerState::AddActionPoints(int32 Amount)
 	ActionPointsChangedEvent.Broadcast(ActionPoints);
 }
 
+void ACardPlayerState::SetActionPoints(int32 Amount)
+{
+	ActionPoints = FMath::Clamp(Amount, 0, MaxActionPoints);
+
+	ActionPointsChangedEvent.Broadcast(ActionPoints);
+}
+
 void ACardPlayerState::AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation)
 {
 	if (PlayerHand.Num() >= MaxHandSize) return;

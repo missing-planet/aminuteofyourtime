@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CardDefines.h"
 #include "CardType.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
@@ -36,6 +37,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	ECardType CardType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TEnumAsByte<ECard> Card;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DestroyChance;

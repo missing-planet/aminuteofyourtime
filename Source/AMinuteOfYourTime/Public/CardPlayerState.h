@@ -44,6 +44,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddActionPoints(int32 Amount);
 
+	UFUNCTION(BlueprintCallable)
+	void SetActionPoints(int32 Amount);
+
 	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation) override;
 	virtual void RemoveCard_Implementation(UCardDataBase* Card) override;
 	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation) override;

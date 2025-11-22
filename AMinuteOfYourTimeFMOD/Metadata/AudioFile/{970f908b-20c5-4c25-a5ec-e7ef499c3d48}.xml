@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{970f908b-20c5-4c25-a5ec-e7ef499c3d48}">
+		<property name="assetPath">
+			<value>Music/(Piano) Confrontation Test.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>164.70834467120181</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2149dffc-7537-4e5d-baac-77c3baf1ac56}</destination>
+		</relationship>
+	</object>
+</objects>
