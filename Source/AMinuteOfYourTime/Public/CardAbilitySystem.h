@@ -25,7 +25,7 @@ public:
 
 public:
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	int32 NumPerformedRituals = 0;
 	
 	UPROPERTY(BlueprintReadWrite)
