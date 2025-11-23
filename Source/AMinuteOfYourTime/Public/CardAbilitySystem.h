@@ -7,10 +7,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "CardAbilitySystem.generated.h"
 
-/**
- * 
- */
-UCLASS()
+UCLASS(BlueprintType)
 class AMINUTEOFYOURTIME_API UCardAbilitySystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -18,5 +15,19 @@ class AMINUTEOFYOURTIME_API UCardAbilitySystem : public UGameInstanceSubsystem
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool DoesCardHaveAbilityOfType(ECard Card, EAbilityType Type);
+	static UCardAbilitySystem* GetCardAbilitySystem(UObject* WorldContext);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool DoesCardHaveAbilityOfType(ECard Card, EAbilityType Type) const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	const TArray<FCardAbilityData>& GetCardAbilityData() const;
+
+public:
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 NumPerformedRituals = 0;
+	
+	UPROPERTY(BlueprintReadWrite)
+	int32 MaxRituals = 2;
 };

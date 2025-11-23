@@ -63,10 +63,12 @@ struct FCardAbilityData
 {
 	GENERATED_BODY()
 
-	FCardAbilityData(TArray<TEnumAsByte<ECard>> Cards, FText Name, FText Description,
-		TEnumAsByte<EAbilityType> Type)
+	FCardAbilityData() = default;
+	FCardAbilityData(const TArray<TEnumAsByte<ECard>>& Cards, const FText& Name,
+		const FText& Description, TEnumAsByte<EAbilityType> Type)
 			: AssociatedCards(Cards)
 			, AbilityName(Name)
+			, AbilityDescription(Description)
 			, AbilityType(Type)
 	{}
 
@@ -86,4 +88,4 @@ struct FCardAbilityData
 	FSlateBrush AbilityBrush;
 };
 
-extern static TArray<FCardAbilityData> GCardAbilityData;
+extern const TArray<FCardAbilityData> GCardAbilityData;
