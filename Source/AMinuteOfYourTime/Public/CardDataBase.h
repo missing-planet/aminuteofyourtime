@@ -39,7 +39,7 @@ public:
 	ECardType CardType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TEnumAsByte<ECard> Card;
+	ECard Card;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DestroyChance;

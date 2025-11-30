@@ -15,9 +15,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FHandChangedSignature, const TArra
 UDELEGATE(BlueprintCallable)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActionPointsChangedSignature, int32, ActionPoints);
 
-UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHandFinalSignature);
-
 UCLASS()
 class AMINUTEOFYOURTIME_API ACardPlayerState : public APlayerState, public IPlayerHandInterface
 {
@@ -41,9 +38,6 @@ public:
 	FHandChangedSignature HandChangedEvent;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-	FHandFinalSignature HandFinalEvent;
-
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FActionPointsChangedSignature ActionPointsChangedEvent;
 
 public:
@@ -57,5 +51,4 @@ public:
 	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay) override;
 	virtual void RemoveCard_Implementation(UCardDataBase* Card) override;
 	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay) override;
-	virtual void FinalizeHand_Implementation() override;
 };

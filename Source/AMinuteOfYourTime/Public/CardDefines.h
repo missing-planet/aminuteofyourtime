@@ -4,7 +4,7 @@
 #include "CardDefines.generated.h"
 
 UENUM(BlueprintType)
-enum ECard : uint8
+enum class ECard : uint8
 {
 	InvalidCard = 0,  
 
@@ -64,7 +64,7 @@ struct FCardAbilityData
 	GENERATED_BODY()
 
 	FCardAbilityData() = default;
-	FCardAbilityData(const TArray<TEnumAsByte<ECard>>& Cards, const FText& Name,
+	FCardAbilityData(const TArray<ECard>& Cards, const FText& Name,
 		const FText& Description, TEnumAsByte<EAbilityType> Type)
 			: AssociatedCards(Cards)
 			, AbilityName(Name)
@@ -73,7 +73,7 @@ struct FCardAbilityData
 	{}
 
 	UPROPERTY(Blueprintable, BlueprintReadWrite)
-	TArray<TEnumAsByte<ECard>> AssociatedCards;
+	TArray<ECard> AssociatedCards;
 	
 	UPROPERTY(Blueprintable, BlueprintReadOnly)
 	FText AbilityName = FText::FromString("Default Ability");

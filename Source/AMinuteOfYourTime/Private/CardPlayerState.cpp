@@ -50,8 +50,3 @@ void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataBase*>& Car
 
 	HandChangedEvent.Broadcast(PlayerHand, DrawLocation, MaxDrawCount, Delay);
 }
-
-void ACardPlayerState::FinalizeHand_Implementation()
-{
-	HandFinalEvent.Broadcast();
-}

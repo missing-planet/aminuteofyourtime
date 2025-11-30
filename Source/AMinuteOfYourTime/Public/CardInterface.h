@@ -49,7 +49,4 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void RemoveCard(UCardDataBase* Card);
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void FinalizeHand();
 };
