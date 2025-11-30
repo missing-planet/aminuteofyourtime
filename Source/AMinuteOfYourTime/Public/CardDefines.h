@@ -82,7 +82,7 @@ struct FCardAbilityData
 	FText AbilityDescription = FText::FromString("This is the default ability type.");
 
 	UPROPERTY(Blueprintable, BlueprintReadOnly)
-	TEnumAsByte<EAbilityType> AbilityType;
+	TEnumAsByte<EAbilityType> AbilityType = TEnumAsByte<EAbilityType>(0);
 
 	UPROPERTY(Blueprintable, BlueprintReadOnly)
 	FSlateBrush AbilityBrush;

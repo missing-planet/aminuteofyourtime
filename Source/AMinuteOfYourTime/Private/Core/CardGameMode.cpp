@@ -3,15 +3,32 @@
 
 #include "Core/CardGameMode.h"
 
+#include "CardPlayerState.h"
+
 int32 ACardGameMode::DrawCardsToHand(
-	UDeckObjectBase* Deck, TScriptInterface<IPlayerHandInterface> Hand,
+	UDeckObjectBase* Deck, const TScriptInterface<IPlayerHandInterface>& Hand,
 	FVector2D DrawLocation, int32 Count, float Delay)
 {
 	if (!Deck || Deck->IsDeckLocked()) return 0;
 
 	int32 InitialCount = Deck->GetCardCount();
 
-	for (int32 i = 0; i < Count; ++i)
+	/*if (Count > 0)
+	{
+		FTimerHandle Handle;
+		GetWorldTimerManager().SetTimer(Handle, [Hand]()
+		{
+			IPlayerHandInterface::Execute_FinalizeHand(Hand.GetObject());
+		}, 0.001f, false, Delay * Count);
+	}*/
+
+	TArray<UCardDataBase*> Cards;
+	int32 Amount = Deck->DrawCards(Count, Cards);
+	Deck->DeckCountChangeEvent.Broadcast(Deck->GetCardCount());
+
+	IPlayerHandInterface::Execute_AddCards(Hand.GetObject(), Cards, DrawLocation, Delay);
+
+	/*for (int32 i = 0; i < Count; ++i)
 	{
 		if (!Deck->IsDeckLocked()) Deck->LockDeck(true);
 		
@@ -30,7 +47,7 @@ int32 ACardGameMode::DrawCardsToHand(
 				IPlayerHandInterface::Execute_AddCard(Hand.GetObject(), Cards.Last(), DrawLocation);
 				if (i == Count - 1) Deck->LockDeck(false);
 			}, 0.001f, false, Delay * i);
-	}
+	}*/
 
 	return FMath::Min(InitialCount, Count);
 }

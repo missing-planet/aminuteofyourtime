@@ -42,11 +42,14 @@ class IPlayerHandInterface
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void AddCard(UCardDataBase* Card, FVector2D DrawLocation);
+	void AddCard(UCardDataBase* Card, FVector2D DrawLocation, float Delay);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void AddCards(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation);
+	void AddCards(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void RemoveCard(UCardDataBase* Card);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void FinalizeHand();
 };

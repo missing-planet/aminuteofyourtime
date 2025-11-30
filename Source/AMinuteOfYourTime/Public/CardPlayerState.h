@@ -9,10 +9,14 @@
 #include "CardPlayerState.generated.h"
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHandChangedSignature, const TArray<UCardDataBase*>&, Hand, FVector2D, DrawLocation, int32, HandDelta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FHandChangedSignature, const TArray<UCardDataBase*>&, Hand,
+	FVector2D, DrawLocation, int32, HandDelta, float, Delay);
 
 UDELEGATE(BlueprintCallable)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActionPointsChangedSignature, int32, ActionPoints);
+
+UDELEGATE(BlueprintCallable)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHandFinalSignature);
 
 UCLASS()
 class AMINUTEOFYOURTIME_API ACardPlayerState : public APlayerState, public IPlayerHandInterface
@@ -37,6 +41,9 @@ public:
 	FHandChangedSignature HandChangedEvent;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FHandFinalSignature HandFinalEvent;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FActionPointsChangedSignature ActionPointsChangedEvent;
 
 public:
@@ -47,7 +54,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetActionPoints(int32 Amount);
 
-	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation) override;
+	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay) override;
 	virtual void RemoveCard_Implementation(UCardDataBase* Card) override;
-	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation) override;
+	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay) override;
+	virtual void FinalizeHand_Implementation() override;
 };
