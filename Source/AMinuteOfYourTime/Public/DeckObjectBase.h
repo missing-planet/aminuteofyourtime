@@ -64,7 +64,7 @@ private:
 	int32 CardCount = 0;
 
 	bool bDeckLocked = false;
-
+	
 	TQueue<UCardDataBase*> Cards;
 
 	UPROPERTY()

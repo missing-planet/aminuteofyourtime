@@ -41,7 +41,7 @@ void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataBase*>& Car
 {
 	if (PlayerHand.Num() >= MaxHandSize) return;
 
-	int32 MaxDrawCount = Cards.Num() - PlayerHand.Num();
+	int32 MaxDrawCount = std::min(Cards.Num(), MaxHandSize - PlayerHand.Num());
 
 	if (MaxDrawCount <= 0) return;
 
@@ -49,6 +49,7 @@ void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataBase*>& Car
 	{
 		PlayerHand.Add(Cards[i]);
 	}
+	// TODO: Something needs to be done with the excess cards if we try to add more than MaxDrawCount
 
 	if (Broadcast)
 		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, MaxDrawCount, Delay);
