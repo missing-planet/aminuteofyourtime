@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿// Copyright (c) 2025, Missing Planet LLC. All rights reserved.
+
+#pragma once
 
 #include "CoreMinimal.h"
 #include "CardDefines.generated.h"

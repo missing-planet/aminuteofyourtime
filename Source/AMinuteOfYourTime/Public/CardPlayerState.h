@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "CardDataBase.h"
+#include "CardHandleMethod.h"
 #include "CardInterface.h"
+#include "Blueprint/UserWidget.h"
 #include "GameFramework/PlayerState.h"
 #include "CardPlayerState.generated.h"
 
@@ -47,6 +49,26 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetActionPoints(int32 Amount);
+
+	UFUNCTION(BlueprintCallable)
+	static void HandleSinkForSpendCard(UUserWidget* UserWidget, ECardHandleMethod HandleMethod, float Delay)
+	{
+		if (!UserWidget) return;
+
+		switch (HandleMethod)
+		{
+		case ECardHandleMethod::Spend:
+			UserWidget->RemoveFromParent();
+			break;
+		case ECardHandleMethod::Destroy:
+			FTimerHandle Handle;
+			UserWidget->GetWorld()->GetTimerManager().SetTimer(Handle, [UserWidget]()
+			{
+				UserWidget->RemoveFromParent();
+			}, Delay, false);
+			break;
+		}
+	}
 
 	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay) override;
 	virtual void RemoveCard_Implementation(UCardDataBase* Card) override;
