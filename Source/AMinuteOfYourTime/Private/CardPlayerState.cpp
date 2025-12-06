@@ -17,25 +17,27 @@ void ACardPlayerState::SetActionPoints(int32 Amount)
 	ActionPointsChangedEvent.Broadcast(ActionPoints);
 }
 
-void ACardPlayerState::AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay)
+void ACardPlayerState::AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay, bool Broadcast)
 {
 	if (PlayerHand.Num() >= MaxHandSize) return;
 
 	PlayerHand.Add(Card);
 
-	HandChangedEvent.Broadcast(PlayerHand, DrawLocation, 1, Delay);
+	if (Broadcast)
+		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, 1, Delay);
 }
 
-void ACardPlayerState::RemoveCard_Implementation(UCardDataBase* Card)
+void ACardPlayerState::RemoveCard_Implementation(UCardDataBase* Card, bool Broadcast)
 {
 	if (!PlayerHand.Contains(Card)) return;
 
 	PlayerHand.RemoveSingle(Card);
 
-	HandChangedEvent.Broadcast(PlayerHand, FVector2D(999, 999), -1, 0);
+	if (Broadcast)
+		HandChangedEvent.Broadcast(PlayerHand, FVector2D(999, 999), -1, 0);
 }
 
-void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay)
+void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay, bool Broadcast)
 {
 	if (PlayerHand.Num() >= MaxHandSize) return;
 
@@ -48,5 +50,6 @@ void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataBase*>& Car
 		PlayerHand.Add(Cards[i]);
 	}
 
-	HandChangedEvent.Broadcast(PlayerHand, DrawLocation, MaxDrawCount, Delay);
+	if (Broadcast)
+		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, MaxDrawCount, Delay);
 }

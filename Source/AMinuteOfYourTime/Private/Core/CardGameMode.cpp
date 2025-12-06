@@ -15,7 +15,7 @@ int32 ACardGameMode::DrawCardsToHand(
 	int32 Amount = Deck->DrawCards(Count, Cards);
 	Deck->DeckCountChangeEvent.Broadcast(Deck->GetCardCount());
 
-	IPlayerHandInterface::Execute_AddCards(Hand.GetObject(), Cards, DrawLocation, Delay);
+	IPlayerHandInterface::Execute_AddCards(Hand.GetObject(), Cards, DrawLocation, Delay, true);
 
 	return Amount;
 }

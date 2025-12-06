@@ -70,7 +70,7 @@ public:
 		}
 	}
 
-	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay) override;
-	virtual void RemoveCard_Implementation(UCardDataBase* Card) override;
-	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay) override;
+	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
+	virtual void RemoveCard_Implementation(UCardDataBase* Card, bool Broadcast = true) override;
+	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
 };
