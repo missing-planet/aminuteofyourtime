@@ -7,6 +7,7 @@
 UENUM(BlueprintType)
 enum class ECardType : uint8
 {
+	Basic        UMETA(DisplayName = "Basic"),
 	Organ        UMETA(DisplayName = "Organ"),
 	Appendage    UMETA(DisplayName = "Appendage"),
 	Sense        UMETA(DisplayName = "Sense"),

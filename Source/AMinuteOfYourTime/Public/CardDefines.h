@@ -67,10 +67,12 @@ struct FCardAbilityData
 
 	FCardAbilityData() = default;
 	FCardAbilityData(const TArray<ECard>& Cards, const FText& Name,
-		const FText& Description, TEnumAsByte<EAbilityType> Type)
+		const FText& Description, int32 MinOfferings, int32 MaxOfferings, TEnumAsByte<EAbilityType> Type)
 			: AssociatedCards(Cards)
 			, AbilityName(Name)
 			, AbilityDescription(Description)
+			, MinOfferingsForAbility(MinOfferings)
+			, MaxOfferingsForAbility(MaxOfferings)
 			, AbilityType(Type)
 	{}
 
@@ -82,6 +84,12 @@ struct FCardAbilityData
 
 	UPROPERTY(Blueprintable, BlueprintReadOnly, meta = (MultiLine))
 	FText AbilityDescription = FText::FromString("This is the default ability type.");
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 MinOfferingsForAbility = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 MaxOfferingsForAbility = 3;
 
 	UPROPERTY(Blueprintable, BlueprintReadOnly)
 	TEnumAsByte<EAbilityType> AbilityType = TEnumAsByte<EAbilityType>(0);

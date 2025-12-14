@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	const TArray<FCardAbilityData>& GetCardAbilityData() const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FVector2D GetAbilityMinMaxOfferings(ECard Card) const;
+
 public:
 
 	UPROPERTY(BlueprintReadWrite)
