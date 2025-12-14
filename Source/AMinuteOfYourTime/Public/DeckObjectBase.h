@@ -65,7 +65,8 @@ private:
 
 	bool bDeckLocked = false;
 	
-	TQueue<UCardDataBase*> Cards;
+	UPROPERTY()
+	TArray<TObjectPtr<UCardDataBase>> Cards;
 
 	UPROPERTY()
 	TArray<UCardDataBase*> OutOfDeckCards;

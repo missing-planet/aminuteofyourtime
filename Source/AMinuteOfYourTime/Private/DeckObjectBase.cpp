@@ -19,7 +19,7 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 			UCardDataBase* NewCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
 			FName(*FString(Card->CardName.ToString() + "_" + Name.ToString() + "_" + FString::FromInt(i++))), RF_NoFlags, Card);
 			NewCard->OwningDeck = this;
-			Cards.Enqueue(NewCard);
+			Cards.Push(NewCard);
 			CardCount++;
 		}
 		//NewCard->AddToRoot();
@@ -47,11 +47,9 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, b
 			Shuffle();
 		}
 
-		UCardDataBase* Card = nullptr;
-		Cards.Peek(Card);
-		Cards.Pop();
-
-		if (!Card) continue;
+		if (Cards.IsEmpty()) continue;
+		
+		TObjectPtr<UCardDataBase> Card = Cards.Pop();
 
 		//Card->RemoveFromRoot();
 		OutCardList.Add(Card);
@@ -70,7 +68,7 @@ void UDeckObjectBase::AddCard(UCardDataBase* Card)
 {
 	if (!Card) return;
 	
-	Cards.Enqueue(Card);
+	Cards.Push(Card);
 	//Card->AddToRoot();
 	if (OutOfDeckCards.Contains(Card)) OutOfDeckCards.Remove(Card);
 
@@ -92,8 +90,7 @@ void UDeckObjectBase::Shuffle()
 
 	while (!Cards.IsEmpty())
 	{
-		UCardDataBase* Card = nullptr;
-		Cards.Dequeue(Card);
+		TObjectPtr<UCardDataBase> Card = Cards.Pop();
 		//Card->RemoveFromRoot();
 		CardList.Add(std::move(Card));
 	}
@@ -107,7 +104,7 @@ void UDeckObjectBase::Shuffle()
 
 	for (int i = 0; i < CardList.Num(); ++i)
 	{
-		Cards.Enqueue(std::move(CardList[i]));
+		Cards.Push(std::move(CardList[i]));
 		//CardList[i]->AddToRoot();
 	}
 }

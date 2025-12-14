@@ -10,7 +10,11 @@ int32 ACardGameMode::DrawCardsToHand(
 	FVector2D DrawLocation, int32 Count, float Delay)
 {
 	if (!Deck || Deck->IsDeckLocked()) return 0;
-	
+
+	if (Deck->GetCardCount() <= 0)
+	{
+		PLATFORM_BREAK();
+	}
 	TArray<UCardDataBase*> Cards;
 	int32 Amount = Deck->DrawCards(Count, Cards);
 	Deck->DeckCountChangeEvent.Broadcast(Deck->GetCardCount());
