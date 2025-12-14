@@ -10,21 +10,22 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 	DeckName = Name;
 
 	uint32 i = 0;
-	for (UCardDataBase* card : DeckData->CardList)
+	for (const auto& [Card, Amount] : DeckData->CardList)
 	{
 		// Create a new object so that the original data asset can't be modified
 		// Use deck name and index to prevent caching, we want a new card object for every card
-		UCardDataBase* NewCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
-			FName(*FString(card->CardName.ToString() + "_" + Name.ToString() + "_" + FString::FromInt(i++))),
-			RF_NoFlags, card);
-		NewCard->OwningDeck = this;
-		Cards.Enqueue(NewCard);
+		for (int j = 0; j < Amount; ++j)
+		{
+			UCardDataBase* NewCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
+			FName(*FString(Card->CardName.ToString() + "_" + Name.ToString() + "_" + FString::FromInt(i++))), RF_NoFlags, Card);
+			NewCard->OwningDeck = this;
+			Cards.Enqueue(NewCard);
+			CardCount++;
+		}
 		//NewCard->AddToRoot();
 	}
 
 	if (Shuffle) this->Shuffle();
-
-	CardCount = DeckData->CardList.Num();
 
 	DeckCountChangeEvent.Broadcast(DeckData->CardList.Num());
 }

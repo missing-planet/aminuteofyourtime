@@ -24,5 +24,5 @@ public:
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<UCardDataBase*> CardList;
+	TMap<UCardDataBase*, int32> CardList;
 };
