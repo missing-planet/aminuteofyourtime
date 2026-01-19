@@ -6,6 +6,7 @@
 #include "CardDefines.h"
 #include "CardType.h"
 #include "GameplayTagContainer.h"
+#include "Components/CanvasPanel.h"
 #include "Engine/DataAsset.h"
 #include "CardDataBase.generated.h"
 
@@ -47,6 +48,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DestroyChance;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DestroyChanceOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DestroyChanceMultiplier = 1;
+
 	UPROPERTY(BlueprintReadWrite)
 	UDeckObjectBase* OwningDeck = nullptr;
 
@@ -54,3 +61,23 @@ public:
 	FGameplayTagContainer CardFlags;*/
 };
 
+inline UCanvasPanel* g_CanvasPanel = nullptr;
+
+UCLASS(Blueprintable)
+class AMINUTEOFYOURTIME_API UCardBlueprintExtensions : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	static void SetCardAnimationCanvas(UCanvasPanel* Canvas)
+	{
+		g_CanvasPanel = Canvas;
+	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static const UCanvasPanel* GetCardAnimationCanvas()
+	{
+		return g_CanvasPanel;
+	}
+};
