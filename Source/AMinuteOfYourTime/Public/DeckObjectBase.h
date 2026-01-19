@@ -59,6 +59,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsDeckLocked() const { return bDeckLocked; }
 
+	UFUNCTION(BlueprintCallable)
+	TArray<UCardDataBase*> GetCards(bool IncludeOutOfDeck, bool IncludeDiscard);
+
 private:
 
 	int32 CardCount = 0;

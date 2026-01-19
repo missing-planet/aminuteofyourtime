@@ -48,10 +48,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DestroyChance;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	float DestroyChanceOffset;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	float DestroyChanceMultiplier = 1;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -61,7 +61,7 @@ public:
 	FGameplayTagContainer CardFlags;*/
 };
 
-inline UCanvasPanel* g_CanvasPanel = nullptr;
+inline TArray<UCanvasPanel*> g_CanvasPanelStack;
 
 UCLASS(Blueprintable)
 class AMINUTEOFYOURTIME_API UCardBlueprintExtensions : public UBlueprintFunctionLibrary
@@ -70,14 +70,23 @@ class AMINUTEOFYOURTIME_API UCardBlueprintExtensions : public UBlueprintFunction
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	static void SetCardAnimationCanvas(UCanvasPanel* Canvas)
+	static void PushCardAnimationCanvas(UCanvasPanel* Canvas)
 	{
-		g_CanvasPanel = Canvas;
+		g_CanvasPanelStack.Push(Canvas);
+	}
+
+	UFUNCTION(BlueprintCallable)
+	static void PopCardAnimationCanvas()
+	{
+		if (!g_CanvasPanelStack.IsEmpty())
+			g_CanvasPanelStack.Pop();
 	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static const UCanvasPanel* GetCardAnimationCanvas()
 	{
-		return g_CanvasPanel;
+		if (g_CanvasPanelStack.IsEmpty()) return nullptr;
+		
+		return g_CanvasPanelStack.Last();
 	}
 };

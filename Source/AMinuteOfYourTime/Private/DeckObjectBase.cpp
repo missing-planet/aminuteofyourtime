@@ -108,3 +108,31 @@ void UDeckObjectBase::Shuffle()
 		//CardList[i]->AddToRoot();
 	}
 }
+
+TArray<UCardDataBase*> UDeckObjectBase::GetCards(bool IncludeOutOfDeck, bool IncludeDiscard)
+{
+	TArray<UCardDataBase*> OutCards;
+
+	for (auto Card : Cards)
+	{
+		OutCards.Add(Card);
+	}
+
+	if (IncludeOutOfDeck)
+	{
+		for (auto Card : OutOfDeckCards)
+		{
+			OutCards.Add(Card);
+		}
+	}
+
+	if (IncludeDiscard && DiscardDeck)
+	{
+		for (auto Card : DiscardDeck->GetCards(false, false))
+		{
+			OutCards.Add(Card);
+		}
+	}
+
+	return OutCards;
+}
