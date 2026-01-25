@@ -4,10 +4,13 @@
 #include "StoryEventBase.h"
 #include "InkStorySubsystem.h"
 #include "TimeSubsystem.h"
+#include "Kismet/GameplayStatics.h"
 
 void UStoryEventBase::Execute_Implementation(FEventDescriptionRow EventDescription, UObject* Caller)
 {
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(Caller);
+	if (!GameInstance) return;
+	UInkStorySubsystem* InkStory = GameInstance->GetSubsystem<UInkStorySubsystem>();
 	if (!InkStory) return;
 
 	// TODO: Make this event actually provide the correct path name

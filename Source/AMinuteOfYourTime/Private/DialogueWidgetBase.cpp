@@ -83,7 +83,7 @@ void UDialogueWidgetBase::NativeConstruct()
 	if (CursorAnimation) PlayAnimation(CursorAnimation, 0, 0);
 
 	UInkpot* InkpotSystem = GEngine->GetEngineSubsystem<UInkpot>();
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 	if (!InkpotSystem || !InkStory) return;
 
 	if (InkStory->HasStoryBegun())
@@ -112,7 +112,7 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 {
 	if (InMouseEvent.GetEffectingButton() == FKey("LeftMouseButton"))
 	{
-		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+		UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 		if (!InkStory || !bAllowSkip) return FReply::Unhandled();
 
 		if (!bHasFinishedPlaying)
@@ -313,7 +313,7 @@ void UDialogueWidgetBase::OnPathEndReached_Implementation(const FString& PathNam
 	if (CurrentHandler != this) return;
 
 	Hide();
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 	if (!InkStory) return;
 
 	InkStory->EventEndReachedEvent.Broadcast(InkStory->GetCurrentPath(), InkStory->GetCurrentStoryHandler());
@@ -329,7 +329,7 @@ void UDialogueWidgetBase::OnBeginStory_Implementation(UInkpotStory* Story)
 
 void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 {
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 	UE_LOG(LogTemp, Warning, TEXT("Handler is: %s, This is: %s"),
 		*InkStory->GetCurrentStoryHandler()->GetName(), *GetName());
 	if (!InkStory || InkStory->GetCurrentStoryHandler() != this) return;
@@ -343,7 +343,7 @@ void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 
 void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkpotChoice* Choice)
 {
-	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 	if (!InkStory || InkStory->GetCurrentStoryHandler() != this) return;
 
 	//LineProgress = 0;

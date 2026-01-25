@@ -33,7 +33,7 @@ UObject* UJournalSubsystem::ChangePageAndStartPath(TSubclassOf<UUserWidget> InTy
 	if (Journal.GetObject())
 	{
 		UUserWidget* Page = IJournalInterface::Execute_ChangePage(Journal.GetObject(), InType);
-		UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+		UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 		if (!InkStory) return Page;
 
 		InkStory->SetCurrentStoryHandler(Page);

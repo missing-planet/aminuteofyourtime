@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Inkpot/InkpotValue.h"
-#include "Subsystems/EngineSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "InkStorySubsystem.generated.h"
 
 class UInkpotChoice;
@@ -18,11 +19,20 @@ UDELEGATE(BlueprintCallable)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPathEndReachedSignature, const FString&, PathName, UObject*, CurrentHandler);
 
 UCLASS()
-class AMINUTEOFYOURTIME_API UInkStorySubsystem : public UEngineSubsystem
+class AMINUTEOFYOURTIME_API UInkStorySubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 	
 public:
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static UInkStorySubsystem* GetInkStorySubsystem(UObject* WorldContext)
+	{
+		UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(WorldContext);
+		if (!GameInstance) return nullptr;
+
+		return GameInstance->GetSubsystem<UInkStorySubsystem>();
+	}
 
 	UFUNCTION(BlueprintCallable)
 	bool StartStory(UInkpotStoryAsset* InStory);
