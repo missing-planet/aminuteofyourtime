@@ -12,8 +12,9 @@ bool UInkStorySubsystem::StartStory(UInkpotStoryAsset* InStory)
 	if (!InStory) return false;
 
 	Story = GEngine->GetEngineSubsystem<UInkpot>()->BeginStory(InStory);
+	if (Story) bStoryHasBegun = true;
 
-	return Story != nullptr;
+	return bStoryHasBegun;
  }
 
 bool UInkStorySubsystem::ContinueStory()

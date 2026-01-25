@@ -90,6 +90,10 @@
 		{
 			"Name": "WidgetAutomationTests",
 			"Enabled": true
+		},
+		{
+			"Name": "BinkMedia",
+			"Enabled": true
 		}
 	]
 }

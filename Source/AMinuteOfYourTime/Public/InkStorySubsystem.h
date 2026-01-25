@@ -60,6 +60,9 @@ public:
 		return CurrentStoryHandler.Get();
 	}
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool HasStoryBegun() const { return bStoryHasBegun; }
+
 public:
 
 	UPROPERTY(BlueprintAssignable)
@@ -81,4 +84,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UObject> CurrentStoryHandler;
+
+	UPROPERTY()
+	bool bStoryHasBegun = false;
 };

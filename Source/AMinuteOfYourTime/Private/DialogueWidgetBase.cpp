@@ -86,7 +86,13 @@ void UDialogueWidgetBase::NativeConstruct()
 	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
 	if (!InkpotSystem || !InkStory) return;
 
-	InkpotSystem->EventOnStoryBegin.AddDynamic(this, &UDialogueWidgetBase::OnBeginStory);
+	if (InkStory->HasStoryBegun())
+	{
+		OnBeginStory(InkStory->GetStory());
+	} else
+	{
+		InkpotSystem->EventOnStoryBegin.AddDynamic(this, &UDialogueWidgetBase::OnBeginStory);
+	}
 
 	InkStory->PathStartedEvent.AddDynamic(this, &UDialogueWidgetBase::OnPathStarted);
 	InkStory->PathEndReachedEvent.AddDynamic(this, &UDialogueWidgetBase::OnPathEndReached);
@@ -324,6 +330,8 @@ void UDialogueWidgetBase::OnBeginStory_Implementation(UInkpotStory* Story)
 void UDialogueWidgetBase::OnContinue_Implementation(UInkpotStory* Story)
 {
 	UInkStorySubsystem* InkStory = GEngine->GetEngineSubsystem<UInkStorySubsystem>();
+	UE_LOG(LogTemp, Warning, TEXT("Handler is: %s, This is: %s"),
+		*InkStory->GetCurrentStoryHandler()->GetName(), *GetName());
 	if (!InkStory || InkStory->GetCurrentStoryHandler() != this) return;
 
 	if (Text_Cursor) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
