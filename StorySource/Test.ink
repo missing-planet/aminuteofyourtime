@@ -23,9 +23,10 @@
     Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec sit amet eros ligula. Nam condimentum magna ac tincidunt placerat. Curabitur sollicitudin eros mi, nec gravida ex sodales a. Donec iaculis auctor convallis. Maecenas placerat nisl nibh, non venenatis lectus sollicitudin eget. 
     Mauris iaculis accumsan purus quis euismod. Fusce massa ligula, luctus ac lobortis ac, feugiat in elit. Nam tempus posuere nunc quis scelerisque. 
     Now a quick choice test.
-        * [The first option] -> DONE
-        * [The second option] -> DONE
+        * [The first option]
+        * [The second option]
         * [The evil third option]
+    - Wow that sure was a choice huh?
     -> DONE
     
 == IconTest

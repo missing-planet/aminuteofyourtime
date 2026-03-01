@@ -67,7 +67,7 @@ void UDialogueBox::PlayLine(const FText& InLine)
 			LineText->SetText(FText::GetEmpty());
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("LINE IS EMPTY!"));
+		//UE_LOG(LogTemp, Warning, TEXT("LINE IS EMPTY!"));
 
 		bHasFinishedPlaying = true;
 		OnLineFinishedPlaying();
@@ -81,7 +81,7 @@ void UDialogueBox::PlayLine(const FText& InLine)
 			LineText->SetText(FText::GetEmpty());
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("LINE IS NOT EMPTY!"));
+		//UE_LOG(LogTemp, Warning, TEXT("LINE IS NOT EMPTY!"));
 
 		bHasFinishedPlaying = false;
 
@@ -122,8 +122,6 @@ void UDialogueBox::PlayNextLetter()
 		{
 			LineText->SetText(FText::FromString(WrappedString));
 		}
-
-		UE_LOG(LogTemp, Warning, TEXT("Current text: %s"), *LineText->GetText().ToString());
 
 		OnPlayLetter();
 		++CurrentLetterIndex;

@@ -20,25 +20,80 @@ void UJournalSubsystem::SetJournalWidget(TScriptInterface<IJournalInterface> InJ
 	Journal = InJournal;	
 }
 
-UObject* UJournalSubsystem::ChangePage(TSubclassOf<UUserWidget> InType)
+UObject* UJournalSubsystem::PushPage(TSubclassOf<UUserWidget> PageType)
 {
-	if (Journal)
-		return Journal->ChangePage(InType);
+	if (Journal.GetObject())
+		return IJournalInterface::Execute_PushPage(Journal.GetObject(), PageType);
 
 	return nullptr;
 }
 
-UObject* UJournalSubsystem::ChangePageAndStartPath(TSubclassOf<UUserWidget> InType, const FString& Path)
+UObject* UJournalSubsystem::PushPageEx(TSubclassOf<UUserWidget> PageType, const FString& EventID,
+	bool bDelayUntilJournalOpen)
+{
+	if (Journal.GetObject())
+		return IJournalInterface::Execute_PushPageEx(Journal.GetObject(), PageType, EventID, bDelayUntilJournalOpen);
+
+	return nullptr;
+}
+
+TArray<UUserWidget*> UJournalSubsystem::PushPages(TArray<TSubclassOf<UUserWidget>> PageTypes)
 {
 	if (Journal.GetObject())
 	{
-		UUserWidget* Page = IJournalInterface::Execute_ChangePage(Journal.GetObject(), InType);
-		UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
-		if (!InkStory) return Page;
+		TArray<UUserWidget*> OutPages;
+		for (const auto& PageType : PageTypes)
+		{
+			auto Page = IJournalInterface::Execute_PushPage(Journal.GetObject(), PageType);
+			OutPages.Add(Page);
+		}
+		return OutPages;
+	}
 
-		InkStory->SetCurrentStoryHandler(Page);
-		InkStory->StartPath(Path);
-		InkStory->ContinueStory();
+	return {};
+}
+
+UObject* UJournalSubsystem::PopPage(TSubclassOf<UUserWidget> PopAsType)
+{
+	if (Journal.GetObject())
+		return IJournalInterface::Execute_PopPage(Journal.GetObject(), PopAsType);
+
+	return nullptr;
+}
+
+TArray<UUserWidget*> UJournalSubsystem::GetPages()
+{
+	if (Journal.GetObject())
+		return IJournalInterface::Execute_GetPages(Journal.GetObject());
+
+	return {};
+}
+
+void UJournalSubsystem::ClearPages()
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_ClearPages(Journal.GetObject());
+}
+
+void UJournalSubsystem::NavigateForward()
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_NavigateForward(Journal.GetObject());
+}
+
+void UJournalSubsystem::NavigateBack()
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_NavigateBack(Journal.GetObject());
+}
+
+void UJournalSubsystem::SetCanSkip(bool bCanSkip)
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_SetCanSkip(Journal.GetObject(), bCanSkip);
+}
+
+UObject* UJournalSubsystem::PushPageAndStartPath(TSubclassOf<UUserWidget> InType, const FString& Path)
+{
+	if (Journal.GetObject())
+	{
+		UUserWidget* Page = IJournalInterface::Execute_PushPageEx(Journal.GetObject(), InType, Path, true);
 
 		return Page;
 	}
@@ -46,8 +101,41 @@ UObject* UJournalSubsystem::ChangePageAndStartPath(TSubclassOf<UUserWidget> InTy
 	return nullptr;
 }
 
+TArray<UUserWidget*> UJournalSubsystem::PushPagesAndStartPath(TArray<TSubclassOf<UUserWidget>> InTypes, const FString& Path)
+{
+	if (Journal.GetObject())
+	{
+		TArray<UUserWidget*> OutPages;
+		for (const auto& PageType : InTypes)
+		{
+			auto Page = IJournalInterface::Execute_PushPageEx(Journal.GetObject(), PageType, Path, true);
+			OutPages.Add(Page);
+		}
+
+		return OutPages;
+	}
+
+	return {};
+}
+
 void UJournalSubsystem::CloseJournal()
 {
 	if (Journal.GetObject())
 		IJournalInterface::Execute_CloseJournal(Journal.GetObject());
+}
+
+int32 UJournalSubsystem::GetPageCount() const
+{
+	if (Journal.GetObject())
+		return IJournalInterface::Execute_GetPageCount(Journal.GetObject());
+
+	return 0;
+}
+
+bool UJournalSubsystem::IsPageFinalEventHandler(const UUserWidget* Page)
+{
+	if (Journal.GetObject())
+		return IJournalInterface::Execute_IsPageFinalEventHandler(Journal.GetObject(), Page);
+
+	return false;
 }
