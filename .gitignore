@@ -99,3 +99,11 @@ Content/AMinuteOfYourTime/FMOD/StreamingAssets/**/*.bank.meta
 
 # Log files can be ignored.
 fmod_editor.log
+
+# Ignore built project files
+**/bin/
+**/bin-obj/
+**/obj/
+
+# Ignore Jetbrains user files
+**/*.DotSettings.user

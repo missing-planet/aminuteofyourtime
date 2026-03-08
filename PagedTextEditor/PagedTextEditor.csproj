@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>Resources\appicon.ico</ApplicationIcon>
+        <Company>Missing Planet LLC</Company>
+        <Product>Missing Planet Journal Editor</Product>
+        <LangVersion>13</LangVersion>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <PackageId>MissingPlanetTextEditor</PackageId>
+        <Title>Missing Planet Text Editor</Title>
+        <Authors>Jake Morgenstern</Authors>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\appicon.ico" />
+      <None Remove="Resources\Kurland-Regular.ttf" />
+      <EmbeddedResource Include="Resources\Kurland-Regular.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Resources\Kurland-Italic.ttf" />
+      <EmbeddedResource Include="Resources\Kurland-Italic.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="AboutApp.cs">
+        <SubType>Form</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Resources\appicon.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>
