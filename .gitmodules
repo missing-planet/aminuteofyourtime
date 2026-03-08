@@ -1,0 +1,3 @@
+[submodule "StorySource"]
+	path = StorySource
+	url = https://github.com/Missing-Planet/HellIsChanging-StorySource
