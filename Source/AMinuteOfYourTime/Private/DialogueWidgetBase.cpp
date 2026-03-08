@@ -373,7 +373,18 @@ void UDialogueWidgetBase::UpdateTextWidget_Implementation(UInkpotStory* Story)
 		HandleTag(Tag);
 	}
 
-	PlayLine(CurrentStoryLine->GetText());
+	FText Line = CurrentStoryLine->GetText();
+	FString Left, Right;
+	Line.ToString().Split("<\\n>", &Left, &Right);
+
+	if (!Left.IsEmpty() && Right.IsEmpty())
+		Line = FText::FromString(Left);
+	else if (Left.IsEmpty() && !Right.IsEmpty())
+		Line = FText::FromString(Right);
+	else if (!Left.IsEmpty() && !Right.IsEmpty())
+		Line = FText::FromString(Left.Append("\n").Append(Right));
+
+	PlayLine(Line);
 }
 
 bool UDialogueWidgetBase::UpdateChoicesView_Implementation(UInkpotStory* Story)
