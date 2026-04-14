@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "JustifyTextDecorator.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
 #include "Framework/Text/RichTextLayoutMarshaller.h"
@@ -18,6 +19,7 @@ class AMINUTEOFYOURTIME_API UDialogueTextBlock : public URichTextBlock
 	GENERATED_BODY()
 	
 public:
+	
 	FORCEINLINE TSharedPtr<FSlateTextLayout> GetTextLayout() const
 	{
 		return TextLayout;
@@ -33,6 +35,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bOverrideStyle;
+
+	UPROPERTY()
+	TObjectPtr<UJustifyTextDecorator> JustifyDecorator;
 
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;

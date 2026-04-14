@@ -12,10 +12,14 @@ TSharedRef<SWidget> UDialogueTextBlock::RebuildWidget()
 	// Copied from URichTextBlock::RebuildWidget
 	UpdateStyleData();
 
+	JustifyDecorator = NewObject<UJustifyTextDecorator>(this);
+	InstanceDecorators.Add(JustifyDecorator);
+
 	TArray< TSharedRef< class ITextDecorator > > CreatedDecorators;
 	CreateDecorators(CreatedDecorators);
 
-	TextMarshaller = FRichTextLayoutMarshaller::Create(CreateMarkupParser(), CreateMarkupWriter(), CreatedDecorators, StyleInstance.Get());
+	TextMarshaller = FRichTextLayoutMarshaller::Create(CreateMarkupParser(), CreateMarkupWriter(),
+		CreatedDecorators,StyleInstance.Get());
 
 	if (bOverrideStyle)
 	{
@@ -100,6 +104,7 @@ void UDialogueBox::SkipToLineEnd()
 	if (IsValid(LineText))
 	{
 		LineText->SetText(FText::FromString(CalculateSegments()));
+		UE_LOG(LogTemp, Warning, TEXT("Set Text to: %s"), *LineText->GetText().ToString());
 	}
 
 	bHasFinishedPlaying = true;
@@ -121,6 +126,7 @@ void UDialogueBox::PlayNextLetter()
 		if (IsValid(LineText))
 		{
 			LineText->SetText(FText::FromString(WrappedString));
+			UE_LOG(LogTemp, Warning, TEXT("Set Text to: %s"), *LineText->GetText().ToString());
 		}
 
 		OnPlayLetter();
@@ -131,6 +137,7 @@ void UDialogueBox::PlayNextLetter()
 		if (IsValid(LineText))
 		{
 			LineText->SetText(FText::FromString(CalculateSegments()));
+			UE_LOG(LogTemp, Warning, TEXT("Set Text to: %s"), *LineText->GetText().ToString());
 		}
 
 		FTimerManager& TimerManager = GetWorld()->GetTimerManager();
@@ -153,6 +160,7 @@ void UDialogueBox::CalculateWrappedString()
 
 		Layout->SetWrappingWidth(TextBoxSize.X);
 		Marshaller->SetText(CurrentLine.ToString(), *Layout.Get());
+		UE_LOG(LogTemp, Warning, TEXT("Set Marshaller to: %s"), *CurrentLine.ToString());
 		Layout->UpdateIfNeeded();
 
 		bool bHasWrittenText = false;
@@ -197,6 +205,7 @@ void UDialogueBox::CalculateWrappedString()
 
 		Layout->SetWrappingWidth(0);
 		LineText->SetText(LineText->GetText());
+		UE_LOG(LogTemp, Warning, TEXT("Set Text to: %s"), *LineText->GetText().ToString());
 	}
 	else
 	{
@@ -263,6 +272,7 @@ FString UDialogueBox::CalculateSegments()
 			break;
 		}
 	}
+	FString temp = Result;
 
 	return Result;
 }
