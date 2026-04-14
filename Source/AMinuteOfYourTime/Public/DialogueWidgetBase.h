@@ -38,6 +38,9 @@ public:
 	void PlayLine(const FText& InLine);
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue Box")
+	void Reset();
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue Box")
 	void GetCurrentLine(FText& OutLine) const { OutLine = CurrentLine; }
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue Box")

@@ -38,11 +38,11 @@ void UDialogueWidgetBase::PlayLine(const FText& InLine)
 
 	if (CurrentLine.IsEmpty())
 	{
-		if (IsValid(LineText))
+		if (IsValid(LineText) && !bPersistentLog)
 		{
 			LineText->SetText(FText::GetEmpty());
 		}
-
+		
 		bHasFinishedPlaying = true;
 		OnLineFinishedPlaying();
 
@@ -50,17 +50,46 @@ void UDialogueWidgetBase::PlayLine(const FText& InLine)
 	}
 	else
 	{
-		if (IsValid(LineText))
-		{
-			LineText->SetText(FText::GetEmpty());
-		}
-
 		bHasFinishedPlaying = false;
-
+		
 		TimerManager.SetTimer(LetterTimer, this, &ThisClass::PlayNextLetter, LetterPlayTime, true);
 
 		LineText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
+}
+
+void UDialogueWidgetBase::Reset()
+{
+	GetWorld()->GetTimerManager().SetTimer(LetterTimer, [&]
+	{
+		Segments.Empty();
+		if (!bPersistentLog)
+		{
+			CachedSegmentText.Empty();
+		}
+		else if (!CachedSegmentText.IsEmpty())
+		{
+			CachedSegmentText += TEXT("\n");
+		}
+
+		if (IsValid(LineText))
+		{
+			LineText->SetText(FText::GetEmpty());
+		}
+			
+		CalculateWrappedString();
+
+		FString WrappedString = CalculateSegments();
+
+		if (IsValid(LineText))
+		{
+			LineText->SetText(FText::FromString(WrappedString));
+		}
+
+		bHasFinishedPlaying = true;
+
+		LineText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	} , 0.00001f, false);
 }
 
 void UDialogueWidgetBase::SkipToLineEnd()
@@ -93,7 +122,7 @@ void UDialogueWidgetBase::NativeConstruct()
 	UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
 	if (!InkpotSystem || !InkStory) return;
 
-	if (InkStory->HasStoryBegun())
+	if (InkStory->HasStoryBegun() && !CachedStory)
 	{
 		OnBeginStory(InkStory->GetStory());
 	} else
@@ -151,6 +180,11 @@ void UDialogueWidgetBase::PlayNextLetter()
 {
 	if (Segments.IsEmpty())
 	{
+		if (IsValid(LineText))
+		{
+			LineText->SetText(FText::GetEmpty());
+		}
+		
 		CalculateWrappedString();
 	}
 
@@ -199,6 +233,8 @@ void UDialogueWidgetBase::CalculateWrappedString()
     	// there's space for it. So we insert newline characters ourselves to ensure inlined justified text always
     	// gets put on a new line, and any non-justified text after it also goes onto a new line.
     	FString ProcessedLine = CurrentLine.ToString();
+    	/*UE_LOG(LogTemp, Warning, TEXT("In Line: %s, Current Text: %s, Cached Text: %s"),
+    		*CurrentLine.ToString(), *LineText->GetText().ToString(), *CachedSegmentText);*/
     	for (const FString& Tag : TArray<FString>{ TEXT("Centered"), TEXT("Right"), TEXT("Left"), TEXT("Justified") })
     	{
     		FString OpenTag = FString::Printf(TEXT("<%s>"), *Tag);
@@ -230,6 +266,7 @@ void UDialogueWidgetBase::CalculateWrappedString()
     		}
     	}
 
+    	Layout->ClearLines();
     	Marshaller->SetText(ProcessedLine, *Layout.Get());
     	FString TempString = ProcessedLine;
     	//UE_LOG(LogTemp, Warning, TEXT("Marshaller set to %s"), *ProcessedLine);
@@ -304,8 +341,8 @@ void UDialogueWidgetBase::CalculateWrappedString()
     		FDialogueTextSegment Segment;
     		Segment.Text = MergedText;
     		Segment.RunInfo = Run->GetRunInfo();
-    		/*UE_LOG(LogTemp, Warning, TEXT("Segment text: '%s', Run: '%s', LineView: %d"), 
-				*MergedText, *Run->GetRunInfo().Name, ThisLineView);*/
+    		UE_LOG(LogTemp, Warning, TEXT("Segment text: '%s', Run: '%s', LineView: %d"), 
+				*MergedText, *Run->GetRunInfo().Name, ThisLineView);
     		Segments.Add(Segment);
 
     		MaxLetterIndex += FMath::Max(
@@ -321,7 +358,6 @@ void UDialogueWidgetBase::CalculateWrappedString()
     	}
 
         Layout->SetWrappingWidth(0);
-        LineText->SetText(LineText->GetText());
     }
     else
     {

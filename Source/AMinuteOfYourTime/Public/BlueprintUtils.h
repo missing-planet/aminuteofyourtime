@@ -7,9 +7,6 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "BlueprintUtils.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class AMINUTEOFYOURTIME_API UBlueprintUtils : public UBlueprintFunctionLibrary
 {
