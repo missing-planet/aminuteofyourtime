@@ -368,64 +368,82 @@ void UDialogueWidgetBase::CalculateWrappedString()
 
 FString UDialogueWidgetBase::CalculateSegments()
 {
-	FString Result = CachedSegmentText;
+    static const TArray<FString> JustificationTags = {
+        TEXT("Centered"), TEXT("Right"), TEXT("Left"), TEXT("Justified")
+    };
 
-	int32 Idx = CachedLetterIndex;
-	while (Idx <= CurrentLetterIndex && CurrentSegmentIndex < Segments.Num())
-	{
-		const FDialogueTextSegment& Segment = Segments[CurrentSegmentIndex];
-		if (!Segment.RunInfo.Name.IsEmpty())
-		{
-			Result += FString::Printf(TEXT("<%s"), *Segment.RunInfo.Name);
+    FString Result = CachedSegmentText;
 
-			if (!Segment.RunInfo.MetaData.IsEmpty())
-			{
-				for (const TTuple<FString, FString>& MetaData : Segment.RunInfo.MetaData)
-				{
-					Result += FString::Printf(TEXT(" %s=\"%s\""), *MetaData.Key, *MetaData.Value);
-				}
-			}
+    int32 Idx = CachedLetterIndex;
+    while (Idx <= CurrentLetterIndex && CurrentSegmentIndex < Segments.Num())
+    {
+        const FDialogueTextSegment& Segment = Segments[CurrentSegmentIndex];
 
-			if (Segment.Text.IsEmpty())
-			{
-				Result += TEXT("/>");
-				++Idx; // This still takes up an index for the typewriter effect.
-			}
-			else
-			{
-				Result += TEXT(">");
-			}
-		}
+        const bool bIsJustifyTag = JustificationTags.Contains(Segment.RunInfo.Name);
 
-		bool bIsSegmentComplete = true;
-		if (!Segment.Text.IsEmpty())
-		{
-			int32 LettersLeft = CurrentLetterIndex - Idx + 1;
-			bIsSegmentComplete = LettersLeft >= Segment.Text.Len();
-			LettersLeft = FMath::Min(LettersLeft, Segment.Text.Len());
-			Idx += LettersLeft;
+        if (!Segment.RunInfo.Name.IsEmpty())
+        {
+            Result += FString::Printf(TEXT("<%s"), *Segment.RunInfo.Name);
 
-			Result += Segment.Text.Mid(0, LettersLeft);
+            if (!Segment.RunInfo.MetaData.IsEmpty())
+            {
+                for (const TTuple<FString, FString>& MetaData : Segment.RunInfo.MetaData)
+                {
+                    Result += FString::Printf(TEXT(" %s=\"%s\""), *MetaData.Key, *MetaData.Value);
+                }
+            }
 
-			if (!Segment.RunInfo.Name.IsEmpty())
-			{
-				Result += TEXT("</>");
-			}
-		}
+            if (Segment.Text.IsEmpty())
+            {
+                Result += TEXT("/>");
+                ++Idx;
+            }
+            else
+            {
+                Result += TEXT(">");
+            }
+        }
 
-		if (bIsSegmentComplete)
-		{
-			CachedLetterIndex = Idx;
-			CachedSegmentText = Result;
-			++CurrentSegmentIndex;
-		}
-		else
-		{
-			break;
-		}
-	}
-	
-	return Result;
+        bool bIsSegmentComplete = true;
+        if (!Segment.Text.IsEmpty())
+        {
+            int32 LettersLeft = CurrentLetterIndex - Idx + 1;
+            bIsSegmentComplete = LettersLeft >= Segment.Text.Len();
+            LettersLeft = FMath::Min(LettersLeft, Segment.Text.Len());
+            Idx += LettersLeft;
+
+            Result += Segment.Text.Mid(0, LettersLeft);
+
+        	if (bIsJustifyTag)
+        	{
+        		for (int i = 0; i < Segment.Text.Len() - LettersLeft; ++i)
+        		{
+        			// Insert a bunch of spaces so that justified text writes
+        			// from its leftmost edge (still a bit jank, I think due to
+        			// characters having variable width)
+        			Result += " ";
+        		}
+        	}
+
+            if (!Segment.RunInfo.Name.IsEmpty())
+            {
+                Result += TEXT("</>");
+            }
+        }
+
+        if (bIsSegmentComplete)
+        {
+            CachedLetterIndex = Idx;
+            CachedSegmentText = Result;
+            ++CurrentSegmentIndex;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return Result;
 }
 
 void UDialogueWidgetBase::OnPathStarted_Implementation(const FString& PathName, UObject* CurrentHandler)

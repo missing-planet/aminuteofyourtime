@@ -133,10 +133,10 @@ public:
 			.HAlign(ResolvedAlignment)
 		   [
 			   SNew(SRichTextBlock)
-			   .Text(FText::FromString(RunText))
-			   .TextStyle(&FinalStyle)
-			   .Decorators(NestedDecorators)
-			   .DecoratorStyleSet(OwnerStyleInstance)
+				   .Text(FText::FromString(RunText))
+				   .TextStyle(&FinalStyle)
+				   .Decorators(NestedDecorators)
+				   .DecoratorStyleSet(OwnerStyleInstance)
 		   ];
 
         // Wrap in a widget run so the layout system can measure and place it
