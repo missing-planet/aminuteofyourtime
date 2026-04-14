@@ -15,7 +15,7 @@ int32 ACardGameMode::DrawCardsToHand(
 	{
 		PLATFORM_BREAK();
 	}
-	TArray<UCardDataBase*> Cards;
+	TArray<UCardDataRuntime*> Cards;
 	int32 Amount = Deck->DrawCards(Count, Cards);
 	Deck->DeckCountChangeEvent.Broadcast(Deck->GetCardCount());
 

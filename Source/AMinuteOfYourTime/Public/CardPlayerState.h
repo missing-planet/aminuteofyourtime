@@ -11,7 +11,7 @@
 #include "CardPlayerState.generated.h"
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FHandChangedSignature, const TArray<UCardDataBase*>&, Hand,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FHandChangedSignature, const TArray<UCardDataRuntime*>&, Hand,
 	FVector2D, DrawLocation, int32, HandDelta, float, Delay);
 
 UDELEGATE(BlueprintCallable)
@@ -25,7 +25,7 @@ class AMINUTEOFYOURTIME_API ACardPlayerState : public APlayerState, public IPlay
 public:
 
 	UPROPERTY(BlueprintReadWrite)
-	TArray<UCardDataBase*> PlayerHand;
+	TArray<UCardDataRuntime*> PlayerHand;
 
 	UPROPERTY(BlueprintReadWrite)
 	int32 MaxHandSize = 999;
@@ -70,7 +70,7 @@ public:
 		}
 	}
 
-	virtual void AddCard_Implementation(UCardDataBase* Card, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
-	virtual void RemoveCard_Implementation(UCardDataBase* Card, bool Broadcast = true) override;
-	virtual void AddCards_Implementation(const TArray<UCardDataBase*>& Cards, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
+	virtual void AddCard_Implementation(UCardDataRuntime* Card, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
+	virtual void RemoveCard_Implementation(UCardDataRuntime* Card, bool Broadcast = true) override;
+	virtual void AddCards_Implementation(const TArray<UCardDataRuntime*>& Cards, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
 };

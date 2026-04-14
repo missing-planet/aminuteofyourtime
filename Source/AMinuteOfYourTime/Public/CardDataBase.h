@@ -27,8 +27,63 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 ActionPointCost;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText CardName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText CardDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	ECardType CardType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	ECard Card;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DestroyChance;
+
 	UPROPERTY(BlueprintReadWrite)
-	int32 ActionPointOffset;
+	UDeckObjectBase* OwningDeck = nullptr;
+
+	/*UPROPERTY(EditAnywhere)
+	FGameplayTagContainer CardFlags;*/
+};
+
+UCLASS(BlueprintType)
+class AMINUTEOFYOURTIME_API UCardDataRuntime : public UObject
+{
+	GENERATED_BODY()
+public:
+	UCardDataRuntime() = default;
+
+	UCardDataRuntime(const UCardDataBase& CardData)
+		: ActionPointCost(CardData.ActionPointCost)
+		, CardName(CardData.CardName)
+		, CardDescription(CardData.CardDescription)
+		, CardType(CardData.CardType)
+		, Card(CardData.Card)
+		, DestroyChance(CardData.DestroyChance)
+		, OwningDeck(CardData.OwningDeck) {}
+
+	UFUNCTION(BlueprintCallable)
+	void Initialize(const UCardDataBase* CardData)
+	{
+		if (!CardData) return;
+		
+		ActionPointCost = CardData->ActionPointCost;
+		CardName = CardData->CardName;
+		CardDescription = CardData->CardDescription;
+		CardType = CardData->CardType;
+		Card = CardData->Card;
+		DestroyChance = CardData->DestroyChance;
+		OwningDeck = CardData->OwningDeck;
+	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ActionPointCost;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 ActionPointOffset = 0;
 
 	UPROPERTY(BlueprintReadWrite)
 	int32 ActionPointMultiplier = 1;
@@ -49,16 +104,13 @@ public:
 	float DestroyChance;
 
 	UPROPERTY(BlueprintReadWrite)
-	float DestroyChanceOffset;
+	float DestroyChanceOffset = 0;
 
 	UPROPERTY(BlueprintReadWrite)
 	float DestroyChanceMultiplier = 1;
 
 	UPROPERTY(BlueprintReadWrite)
 	UDeckObjectBase* OwningDeck = nullptr;
-
-	/*UPROPERTY(EditAnywhere)
-	FGameplayTagContainer CardFlags;*/
 };
 
 inline TArray<UCanvasPanel*> g_CanvasPanelStack;

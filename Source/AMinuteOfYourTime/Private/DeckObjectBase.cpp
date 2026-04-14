@@ -16,8 +16,8 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 		// Use deck name and index to prevent caching, we want a new card object for every card
 		for (int j = 0; j < Amount; ++j)
 		{
-			UCardDataBase* NewCard = NewObject<UCardDataBase>(this, UCardDataBase::StaticClass(),
-			FName(*FString(Card->CardName.ToString() + "_" + Name.ToString() + "_" + FString::FromInt(i++))), RF_NoFlags, Card);
+			UCardDataRuntime* NewCard = NewObject<UCardDataRuntime>();
+			NewCard->Initialize(Card);
 			NewCard->OwningDeck = this;
 			Cards.Push(NewCard);
 			CardCount++;
@@ -30,7 +30,7 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 	DeckCountChangeEvent.Broadcast(DeckData->CardList.Num());
 }
 
-int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange)
+int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataRuntime*>& OutCardList, bool BroadcastChange)
 {
 	int ReturnCount = 0;
 
@@ -40,7 +40,7 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, b
 		{
 			if (!DiscardDeck) break;
 
-			TArray<UCardDataBase*> DiscardedCards;
+			TArray<UCardDataRuntime*> DiscardedCards;
 			int32 Amount = DiscardDeck->DrawCards(DiscardDeck->GetCardCount(), DiscardedCards, false);
 			DiscardDeck->DeckCountChangeEvent.Broadcast(Amount);
 			AddCards(DiscardedCards);
@@ -49,7 +49,7 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, b
 
 		if (Cards.IsEmpty()) continue;
 		
-		TObjectPtr<UCardDataBase> Card = Cards.Pop();
+		TObjectPtr<UCardDataRuntime> Card = Cards.Pop();
 
 		//Card->RemoveFromRoot();
 		OutCardList.Add(Card);
@@ -64,7 +64,7 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, b
 	return ReturnCount;
 }
 
-void UDeckObjectBase::AddCard(UCardDataBase* Card)
+void UDeckObjectBase::AddCard(UCardDataRuntime* Card)
 {
 	if (!Card) return;
 	
@@ -76,9 +76,9 @@ void UDeckObjectBase::AddCard(UCardDataBase* Card)
 	DeckCountChangeEvent.Broadcast(1);
 }
 
-void UDeckObjectBase::AddCards(const TArray<UCardDataBase*>& CardList)
+void UDeckObjectBase::AddCards(const TArray<UCardDataRuntime*>& CardList)
 {
-	for (UCardDataBase* card : CardList)
+	for (UCardDataRuntime* card : CardList)
 	{
 		AddCard(card);
 	}
@@ -86,11 +86,11 @@ void UDeckObjectBase::AddCards(const TArray<UCardDataBase*>& CardList)
 
 void UDeckObjectBase::Shuffle()
 {
-	TArray<UCardDataBase*> CardList;
+	TArray<UCardDataRuntime*> CardList;
 
 	while (!Cards.IsEmpty())
 	{
-		TObjectPtr<UCardDataBase> Card = Cards.Pop();
+		TObjectPtr<UCardDataRuntime> Card = Cards.Pop();
 		//Card->RemoveFromRoot();
 		CardList.Add(std::move(Card));
 	}
@@ -109,9 +109,9 @@ void UDeckObjectBase::Shuffle()
 	}
 }
 
-TArray<UCardDataBase*> UDeckObjectBase::GetCards(bool IncludeOutOfDeck, bool IncludeDiscard)
+TArray<UCardDataRuntime*> UDeckObjectBase::GetCards(bool IncludeOutOfDeck, bool IncludeDiscard)
 {
-	TArray<UCardDataBase*> OutCards;
+	TArray<UCardDataRuntime*> OutCards;
 
 	for (auto Card : Cards)
 	{

@@ -42,13 +42,13 @@ public:
 
 	// Returns actual number of cards drawn, in the case that the deck has less than Count
 	UFUNCTION(BlueprintCallable)
-	int DrawCards(int Count, TArray<UCardDataBase*>& OutCardList, bool BroadcastChange = false);
+	int DrawCards(int Count, TArray<UCardDataRuntime*>& OutCardList, bool BroadcastChange = false);
 
 	UFUNCTION(BlueprintCallable)
-	void AddCard(UCardDataBase* Card);
+	void AddCard(UCardDataRuntime* Card);
 
 	UFUNCTION(BlueprintCallable)
-	void AddCards(const TArray<UCardDataBase*>& CardList);
+	void AddCards(const TArray<UCardDataRuntime*>& CardList);
 
 	UFUNCTION(BlueprintCallable)
 	void Shuffle();
@@ -60,7 +60,7 @@ public:
 	bool IsDeckLocked() const { return bDeckLocked; }
 
 	UFUNCTION(BlueprintCallable)
-	TArray<UCardDataBase*> GetCards(bool IncludeOutOfDeck, bool IncludeDiscard);
+	TArray<UCardDataRuntime*> GetCards(bool IncludeOutOfDeck, bool IncludeDiscard);
 
 private:
 
@@ -69,10 +69,10 @@ private:
 	bool bDeckLocked = false;
 	
 	UPROPERTY()
-	TArray<TObjectPtr<UCardDataBase>> Cards;
+	TArray<TObjectPtr<UCardDataRuntime>> Cards;
 
 	UPROPERTY()
-	TArray<UCardDataBase*> OutOfDeckCards;
+	TArray<TObjectPtr<UCardDataRuntime>> OutOfDeckCards;
 
 	UPROPERTY()
 	TObjectPtr<UDeckObjectBase> DiscardDeck;
