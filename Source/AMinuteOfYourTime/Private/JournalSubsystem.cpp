@@ -84,9 +84,9 @@ void UJournalSubsystem::NavigateBack()
 	if (Journal.GetObject()) IJournalInterface::Execute_NavigateBack(Journal.GetObject());
 }
 
-void UJournalSubsystem::SetCanSkip(bool bCanSkip)
+void UJournalSubsystem::SetCanSkip(bool bCanSkip, UObject* LockedBy)
 {
-	if (Journal.GetObject()) IJournalInterface::Execute_SetCanSkip(Journal.GetObject(), bCanSkip);
+	if (Journal.GetObject()) IJournalInterface::Execute_SetCanSkip(Journal.GetObject(), bCanSkip, LockedBy);
 }
 
 UObject* UJournalSubsystem::PushPageAndStartPath(TSubclassOf<UUserWidget> InType, const FString& Path)

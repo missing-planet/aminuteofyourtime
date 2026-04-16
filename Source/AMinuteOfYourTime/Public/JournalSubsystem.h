@@ -43,7 +43,7 @@ public:
 	void NavigateBack();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void SetCanSkip(bool bCanSkip);
+	void SetCanSkip(bool bCanSkip, UObject* LockedBy = nullptr);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	int32 GetPageCount();
@@ -90,7 +90,7 @@ public:
 	void NavigateBack();
 
 	UFUNCTION(BlueprintCallable)
-	void SetCanSkip(bool bCanSkip);
+	void SetCanSkip(bool bCanSkip, UObject* LockedBy = nullptr);
 
 	UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = "InType"))
 	UObject* PushPageAndStartPath(TSubclassOf<UUserWidget> InType, const FString& Path);
