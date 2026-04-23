@@ -268,7 +268,6 @@ void UDialogueWidgetBase::CalculateWrappedString()
 
     	Layout->ClearLines();
     	Marshaller->SetText(ProcessedLine, *Layout.Get());
-    	FString TempString = ProcessedLine;
     	//UE_LOG(LogTemp, Warning, TEXT("Marshaller set to %s"), *ProcessedLine);
         Layout->UpdateIfNeeded();
     	if (LineText->JustifyDecorator)

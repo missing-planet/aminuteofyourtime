@@ -17,14 +17,15 @@ void ACardPlayerState::SetActionPoints(int32 Amount)
 	ActionPointsChangedEvent.Broadcast(ActionPoints);
 }
 
-void ACardPlayerState::AddCard_Implementation(UCardDataRuntime* Card, FVector2D DrawLocation, float Delay, bool Broadcast)
+void ACardPlayerState::AddCard_Implementation(UCardDataRuntime* Card, FVector2D DrawLocation, float Delay,
+	bool Broadcast, bool Animate)
 {
 	if (PlayerHand.Num() >= MaxHandSize) return;
 
 	PlayerHand.Add(Card);
 
 	if (Broadcast)
-		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, 1, Delay);
+		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, 1, Delay, Animate);
 }
 
 void ACardPlayerState::RemoveCard_Implementation(UCardDataRuntime* Card, bool Broadcast)
@@ -34,11 +35,11 @@ void ACardPlayerState::RemoveCard_Implementation(UCardDataRuntime* Card, bool Br
 	PlayerHand.RemoveSingle(Card);
 
 	if (Broadcast)
-		HandChangedEvent.Broadcast(PlayerHand, FVector2D(999, 999), -1, 0);
+		HandChangedEvent.Broadcast(PlayerHand, FVector2D(999, 999), -1, 0, true);
 }
 
 void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataRuntime*>& Cards, FVector2D DrawLocation,
-	float Delay, bool Broadcast)
+	float Delay, bool Broadcast, bool Animate)
 {
 	if (PlayerHand.Num() >= MaxHandSize) return;
 
@@ -53,5 +54,5 @@ void ACardPlayerState::AddCards_Implementation(const TArray<UCardDataRuntime*>& 
 	// TODO: Something needs to be done with the excess cards if we try to add more than MaxDrawCount
 
 	if (Broadcast)
-		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, MaxDrawCount, Delay);
+		HandChangedEvent.Broadcast(PlayerHand, DrawLocation, MaxDrawCount, Delay, Animate);
 }
