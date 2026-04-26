@@ -51,6 +51,12 @@ public:
 	void AddCards(const TArray<UCardDataRuntime*>& CardList);
 
 	UFUNCTION(BlueprintCallable)
+	void RemoveCard(UCardDataRuntime* Card);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveCards(const TArray<UCardDataRuntime*>& CardList);
+
+	UFUNCTION(BlueprintCallable)
 	void Shuffle();
 
 	UFUNCTION(BlueprintCallable)

@@ -235,40 +235,68 @@ void UDialogueWidgetBase::CalculateWrappedString()
     	FString ProcessedLine = CurrentLine.ToString();
     	/*UE_LOG(LogTemp, Warning, TEXT("In Line: %s, Current Text: %s, Cached Text: %s"),
     		*CurrentLine.ToString(), *LineText->GetText().ToString(), *CachedSegmentText);*/
-    	for (const FString& Tag : TArray<FString>{ TEXT("Centered"), TEXT("Right"), TEXT("Left"), TEXT("Justified") })
-    	{
-    		FString OpenTag = FString::Printf(TEXT("<%s>"), *Tag);
-    		int32 OpenIdx = ProcessedLine.Find(OpenTag);
-    		while (OpenIdx != INDEX_NONE)
-    		{
-    			// Insert \n before opening tag if not already there
-    			if (OpenIdx > 0 && ProcessedLine[OpenIdx - 1] != '\n')
-    			{
-    				ProcessedLine.InsertAt(OpenIdx, TEXT("\n"));
-    				OpenIdx += 1; // adjust for inserted \n
-    			}
+    	// Step 1: Replace <br> inside justify tags by splitting them into multiple justify tags
+		for (const FString& Tag : TArray<FString>{ TEXT("Centered"), TEXT("Right"), TEXT("Left"), TEXT("Justified") })
+		{
+		    FString OpenTag = FString::Printf(TEXT("<%s>"), *Tag);
+		    FString CloseAndReopen = FString::Printf(TEXT("</>\n<%s>"), *Tag);
 
-    			// Find the matching closing tag
-    			int32 CloseIdx = ProcessedLine.Find(TEXT("</>"), ESearchCase::IgnoreCase, ESearchDir::FromStart,
-    				OpenIdx + OpenTag.Len());
-    			if (CloseIdx != INDEX_NONE)
-    			{
-    				int32 InsertPos = CloseIdx + 3; // after </>
-    				if (InsertPos < ProcessedLine.Len() && ProcessedLine[InsertPos] != '\n')
-    				{
-    					ProcessedLine.InsertAt(InsertPos, TEXT("\n"));
-    				}
-    			}
+		    int32 OpenIdx = ProcessedLine.Find(OpenTag);
+		    while (OpenIdx != INDEX_NONE)
+		    {
+		        int32 ContentStart = OpenIdx + OpenTag.Len();
+		        int32 CloseIdx = ProcessedLine.Find(TEXT("</>"), ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+		        if (CloseIdx != INDEX_NONE)
+		        {
+		            FString Content = ProcessedLine.Mid(ContentStart, CloseIdx - ContentStart);
+		            FString NewContent = Content.Replace(TEXT("<br>"), *CloseAndReopen);
+		            if (Content != NewContent)
+		            {
+		                ProcessedLine = ProcessedLine.Left(ContentStart) + NewContent + ProcessedLine.Mid(CloseIdx);
+		            }
+		        }
+		        OpenIdx = ProcessedLine.Find(OpenTag, ESearchCase::IgnoreCase, ESearchDir::FromStart,
+		            OpenIdx + OpenTag.Len());
+		    }
+		}
 
-    			// Find next occurrence
-    			OpenIdx = ProcessedLine.Find(OpenTag, ESearchCase::IgnoreCase, ESearchDir::FromStart,
-    				OpenIdx + OpenTag.Len());
-    		}
-    	}
+		// Step 2: Replace remaining <br> outside justify tags with \n
+		ProcessedLine = ProcessedLine.Replace(TEXT("<br>"), TEXT("\n"));
 
-    	Layout->ClearLines();
-    	Marshaller->SetText(ProcessedLine, *Layout.Get());
-    	//UE_LOG(LogTemp, Warning, TEXT("Marshaller set to %s"), *ProcessedLine);
+		// Step 3: Insert \n before and after justify tags so they're on their own line models
+		for (const FString& Tag : TArray<FString>{ TEXT("Centered"), TEXT("Right"), TEXT("Left"), TEXT("Justified") })
+		{
+		    FString OpenTag = FString::Printf(TEXT("<%s>"), *Tag);
+		    int32 OpenIdx = ProcessedLine.Find(OpenTag);
+		    while (OpenIdx != INDEX_NONE)
+		    {
+		        // Insert \n before opening tag if not already there and not at start
+		        if (OpenIdx > 0 && ProcessedLine[OpenIdx - 1] != '\n')
+		        {
+		            ProcessedLine.InsertAt(OpenIdx, TEXT("\n"));
+		            OpenIdx += 1;
+		        }
+
+		        // Find the matching closing tag
+		        int32 CloseIdx = ProcessedLine.Find(TEXT("</>"), ESearchCase::IgnoreCase, ESearchDir::FromStart, OpenIdx + OpenTag.Len());
+		        if (CloseIdx != INDEX_NONE)
+		        {
+		            int32 InsertPos = CloseIdx + 3;
+		            if (InsertPos >= ProcessedLine.Len() || ProcessedLine[InsertPos] != '\n')
+		            {
+		                ProcessedLine.InsertAt(InsertPos, TEXT("\n"));
+		            }
+		        }
+
+		        OpenIdx = ProcessedLine.Find(OpenTag, ESearchCase::IgnoreCase, ESearchDir::FromStart,
+		            OpenIdx + OpenTag.Len());
+		    }
+		}
+
+		//UE_LOG(LogTemp, Warning, TEXT("Processed line is %s"), *ProcessedLine);
+
+		Layout->ClearLines();
+		Marshaller->SetText(ProcessedLine, *Layout.Get());
         Layout->UpdateIfNeeded();
     	if (LineText->JustifyDecorator)
     		LineText->JustifyDecorator->SetMeasurePassOnly(false);
@@ -300,6 +328,17 @@ void UDialogueWidgetBase::CalculateWrappedString()
     		{
     			AllBlocks.Add({ ViewIdx, Block });
     		}
+    	}
+
+    	for (int32 DebugIdx = 0; DebugIdx < AllBlocks.Num(); ++DebugIdx)
+    	{
+    		FString DebugText;
+    		AllBlocks[DebugIdx].Block->GetRun()->AppendTextTo(DebugText, AllBlocks[DebugIdx].Block->GetTextRange());
+    		UE_LOG(LogTemp, Warning, TEXT("Block %d: Run='%s', LineView=%d, Text='%s'"), 
+				DebugIdx,
+				*AllBlocks[DebugIdx].Block->GetRun()->GetRunInfo().Name,
+				AllBlocks[DebugIdx].LineViewIndex,
+				*DebugText);
     	}
 
     	while (i < AllBlocks.Num())
@@ -520,16 +559,7 @@ void UDialogueWidgetBase::UpdateTextWidget_Implementation(UInkpotStory* Story)
 	}
 
 	FText Line = CurrentStoryLine->GetText();
-	FString Left, Right;
-	Line.ToString().Split("<\\n>", &Left, &Right);
-
-	if (!Left.IsEmpty() && Right.IsEmpty())
-		Line = FText::FromString(Left);
-	else if (Left.IsEmpty() && !Right.IsEmpty())
-		Line = FText::FromString(Right);
-	else if (!Left.IsEmpty() && !Right.IsEmpty())
-		Line = FText::FromString(Left.Append("\n").Append(Right));
-
+	
 	PlayLine(Line);
 }
 

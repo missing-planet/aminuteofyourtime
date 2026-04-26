@@ -11,7 +11,7 @@ TSharedRef<SWidget> UDialogueTextBlock::RebuildWidget()
 {
 	// Copied from URichTextBlock::RebuildWidget
 	UpdateStyleData();
-
+	
 	JustifyDecorator = NewObject<UJustifyTextDecorator>(this);
 	InstanceDecorators.Add(JustifyDecorator);
 
@@ -48,6 +48,17 @@ UDialogueBox::UDialogueBox(const FObjectInitializer& ObjectInitializer)
 {
 	bHasFinishedPlaying = true;
 }
+
+/*void UDialogueTextBlock::TickDecorators(float DeltaTime)
+{
+	for (auto Decorator : InstanceDecorators)
+	{
+		if (UCustomImageDecorator* ImageDecorator = Cast<UCustomImageDecorator>(Decorator))
+		{
+			ImageDecorator->TickProgress(DeltaTime);
+		}
+	}
+}*/
 
 void UDialogueBox::PlayLine(const FText& InLine)
 {
@@ -272,7 +283,6 @@ FString UDialogueBox::CalculateSegments()
 			break;
 		}
 	}
-	FString temp = Result;
 
 	return Result;
 }

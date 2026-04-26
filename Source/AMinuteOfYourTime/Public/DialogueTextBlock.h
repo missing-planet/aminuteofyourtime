@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CustomImageDecorator.h"
 #include "JustifyTextDecorator.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
@@ -29,6 +30,9 @@ public:
 	{
 		return TextMarshaller;
 	}
+
+	/*UFUNCTION(BlueprintCallable)
+	void TickDecorators(float DeltaTime);*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName OverrideStyleRowName;
