@@ -40,7 +40,7 @@ void UDialogueWidgetBase::NativeConstruct()
 	LineText->OnLineFinishedPlayingEvent.AddDynamic(this, &ThisClass::OnLineFinishedPlaying);
 	LineText->OnPlayLetterEvent.AddDynamic(this, &ThisClass::OnPlayLetter);
 
-	Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
+	if (Text_Cursor) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 	if (CursorAnimation) PlayAnimation(CursorAnimation, 0, 0);
 
 	UInkpot* InkpotSystem = GEngine->GetEngineSubsystem<UInkpot>();
@@ -70,12 +70,13 @@ FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 		{
 			OnSkipLine();
 			SkipToLineEnd();
-			Text_Cursor->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+			if (Text_Cursor) Text_Cursor->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 
 			return FReply::Handled();
 		} else
 		{
-			if (InkStory->ContinueStory()) Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
+			if (InkStory->ContinueStory() && Text_Cursor)
+				Text_Cursor->SetVisibility(ESlateVisibility::Collapsed);
 
 			return FReply::Handled();
 		}
@@ -143,6 +144,7 @@ void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkp
 
 void UDialogueWidgetBase::OnEntryGenerated_Implementation(UUserWidget* Widget)
 {
+	check(LV_Choices);
 	auto& EntryWidgets = LV_Choices->GetDisplayedEntryWidgets();
 	int32 Index = EntryWidgets.Find(Widget);
 
@@ -169,6 +171,8 @@ void UDialogueWidgetBase::UpdateTextWidget_Implementation(UInkpotStory* Story)
 
 bool UDialogueWidgetBase::UpdateChoicesView_Implementation(UInkpotStory* Story)
 {
+	if (!LV_Choices) return false;
+	
 	if (Story->HasChoices())
 	{
 		LV_Choices->SetListItems(Story->GetCurrentChoices());

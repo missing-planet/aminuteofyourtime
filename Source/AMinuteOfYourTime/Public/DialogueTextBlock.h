@@ -68,6 +68,9 @@ public:
 	void PlayLine(const FText& InLine);
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue Box")
+	void SetLine(const FText& InLine);
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue Box")
 	void Reset();
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue Box")

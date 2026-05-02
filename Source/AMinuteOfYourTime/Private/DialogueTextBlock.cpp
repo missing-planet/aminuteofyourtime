@@ -92,6 +92,46 @@ void UDialogueTextBlock::PlayLine(const FText& InLine)
 	}
 }
 
+void UDialogueTextBlock::SetLine(const FText& InLine)
+{
+	check(GetWorld());
+
+	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
+	TimerManager.ClearTimer(LetterTimer);
+
+	CurrentLine = InLine;
+	CurrentLetterIndex = 0;
+	CachedLetterIndex = 0;
+	CurrentSegmentIndex = 0;
+	MaxLetterIndex = 0;
+	Segments.Empty();
+	if (!bPersistentLog)
+	{
+		CachedSegmentText.Empty();
+	}
+	else if (!CachedSegmentText.IsEmpty())
+	{
+		CachedSegmentText += TEXT("\n");
+	}
+
+	if (CurrentLine.IsEmpty())
+	{
+		if (!bPersistentLog)
+		{
+			SetText(FText::GetEmpty());
+		}
+
+		SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		CalculateWrappedString();
+		SkipToLineEnd();
+
+		SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+}
+
 void UDialogueTextBlock::Reset()
 {
 	GetWorld()->GetTimerManager().SetTimer(LetterTimer, [&]
@@ -142,19 +182,16 @@ void UDialogueTextBlock::PlayNextLetter()
 	}
 
 	FString WrappedString = CalculateSegments();
+	SetText(FText::FromString(WrappedString));
 
 	// TODO: How do we keep indexing of text i18n-friendly?
 	if (CurrentLetterIndex < MaxLetterIndex)
 	{
-		SetText(FText::FromString(WrappedString));
-		
 		OnPlayLetterEvent.Broadcast(CurrentLetterIndex, GetText().ToString().Right(1));
 		++CurrentLetterIndex;
 	}
 	else
 	{
-		SetText(FText::FromString(CalculateSegments()));
-
 		FTimerManager& TimerManager = GetWorld()->GetTimerManager();
 		TimerManager.ClearTimer(LetterTimer);
 

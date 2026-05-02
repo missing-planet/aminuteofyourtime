@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "JournalSubsystem.generated.h"
 
+DEC
+
 UINTERFACE(MinimalAPI, Blueprintable)
 class UJournalInterface : public UInterface
 {

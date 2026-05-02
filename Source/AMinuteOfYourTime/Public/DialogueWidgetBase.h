@@ -96,7 +96,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
 	TObjectPtr<UCustomTextNativeBase> Text_Speaker;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
 	TObjectPtr<UWidget> Text_Cursor;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
@@ -108,7 +108,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
 	TObjectPtr<UOverlay> Overlay_Root;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
 	TObjectPtr<UListView> LV_Choices;
 
 private:
