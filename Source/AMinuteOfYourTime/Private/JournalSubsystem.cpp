@@ -139,3 +139,15 @@ bool UJournalSubsystem::IsPageFinalEventHandler(const UUserWidget* Page)
 
 	return false;
 }
+
+bool UJournalSubsystem::IsPageActive(const UUserWidget* Page)
+{
+	if (!Page || GetPageCount() <= 0) return false;
+
+	TArray<UUserWidget*> Pages = GetPages();
+	if (Pages.Last() == Page) return true;
+
+	if (GetPageCount() % 2 == 1 && GetPageCount() > 1 && Pages[GetPageCount() - 2] == Page) return true;
+
+	return false;
+}

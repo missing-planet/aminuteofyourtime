@@ -6,8 +6,6 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "JournalSubsystem.generated.h"
 
-DEC
-
 UINTERFACE(MinimalAPI, Blueprintable)
 class UJournalInterface : public UInterface
 {
@@ -108,6 +106,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsPageFinalEventHandler(const UUserWidget* Page);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsPageActive(const UUserWidget* Page);
 
 private:
 
