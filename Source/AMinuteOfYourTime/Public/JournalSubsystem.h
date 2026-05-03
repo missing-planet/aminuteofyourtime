@@ -43,6 +43,9 @@ public:
 	void NavigateBack();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void EnableNavigation(bool bAllowNavigation);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetCanSkip(bool bCanSkip, UObject* LockedBy = nullptr);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
@@ -88,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void NavigateBack();
+
+	UFUNCTION(BlueprintCallable)
+	void EnableNavigation(bool bAllowNavigation);
 
 	UFUNCTION(BlueprintCallable)
 	void SetCanSkip(bool bCanSkip, UObject* LockedBy = nullptr);

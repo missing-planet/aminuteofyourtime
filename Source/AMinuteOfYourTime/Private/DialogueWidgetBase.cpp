@@ -50,13 +50,34 @@ void UDialogueWidgetBase::NativeConstruct()
 	if (InkStory->HasStoryBegun() && !CachedStory)
 	{
 		OnBeginStory(InkStory->GetStory());
+		bBoundSetupEvent = false;
 	} else
 	{
 		InkpotSystem->EventOnStoryBegin.AddDynamic(this, &UDialogueWidgetBase::OnBeginStory);
+		bBoundSetupEvent = true;
 	}
 
 	InkStory->PathStartedEvent.AddDynamic(this, &UDialogueWidgetBase::OnPathStarted);
 	InkStory->PathEndReachedEvent.AddDynamic(this, &UDialogueWidgetBase::OnPathEndReached);
+}
+
+void UDialogueWidgetBase::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	LineText->OnLineFinishedPlayingEvent.Clear();
+	LineText->OnPlayLetterEvent.Clear();
+
+	UInkStorySubsystem* InkStory = GetGameInstance()->GetSubsystem<UInkStorySubsystem>();
+	if (!InkStory) return;
+
+	InkStory->PathStartedEvent.RemoveDynamic(this, &UDialogueWidgetBase::OnPathStarted);
+	InkStory->PathEndReachedEvent.RemoveDynamic(this, &UDialogueWidgetBase::OnPathEndReached);
+
+	UInkpot* InkpotSystem = GEngine->GetEngineSubsystem<UInkpot>();
+	if (!InkpotSystem || !bBoundSetupEvent) return;
+
+	InkpotSystem->EventOnStoryBegin.RemoveDynamic(this, &UDialogueWidgetBase::OnBeginStory);
 }
 
 FReply UDialogueWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)

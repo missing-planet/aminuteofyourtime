@@ -43,6 +43,8 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 
+	virtual void NativeDestruct() override;
+
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply
 		NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
@@ -115,6 +117,8 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UInkpotStory> CachedStory;
+
+	bool bBoundSetupEvent = false;
 
 private:
 

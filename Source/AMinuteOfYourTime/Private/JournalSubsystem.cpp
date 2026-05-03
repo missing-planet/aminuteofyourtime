@@ -84,6 +84,11 @@ void UJournalSubsystem::NavigateBack()
 	if (Journal.GetObject()) IJournalInterface::Execute_NavigateBack(Journal.GetObject());
 }
 
+void UJournalSubsystem::EnableNavigation(bool bAllowNavigation)
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_EnableNavigation(Journal.GetObject(), bAllowNavigation);
+}
+
 void UJournalSubsystem::SetCanSkip(bool bCanSkip, UObject* LockedBy)
 {
 	if (Journal.GetObject()) IJournalInterface::Execute_SetCanSkip(Journal.GetObject(), bCanSkip, LockedBy);
