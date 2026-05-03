@@ -134,7 +134,41 @@ void UDialogueTextBlock::SetLine(const FText& InLine)
 
 void UDialogueTextBlock::Reset()
 {
-	GetWorld()->GetTimerManager().SetTimer(LetterTimer, [&]
+	// This function was required for navigation once, doesn't seem to be an issue anymore tho.
+	
+	/*const bool bWasPlaying = !bHasFinishedPlaying;
+	GetWorld()->GetTimerManager().ClearTimer(LetterTimer);
+	Segments.Empty();
+	if (!bPersistentLog)
+	{
+		CachedSegmentText.Empty();
+	}
+	/*else if (!CachedSegmentText.IsEmpty())
+	{
+		CachedSegmentText += TEXT("\n");
+	}#1#
+
+	SetText(FText::GetEmpty());
+			
+	CalculateWrappedString();
+
+	FString WrappedString = CalculateSegments();
+
+	SetText(FText::FromString(WrappedString));
+
+	if (bWasPlaying)
+	{
+		bHasFinishedPlaying = false;
+		
+		GetWorld()->GetTimerManager().SetTimer(LetterTimer, this, &ThisClass::PlayNextLetter, LetterPlayTime, true);
+	} else
+	{
+		bHasFinishedPlaying = true;
+	}
+
+	SetVisibility(ESlateVisibility::SelfHitTestInvisible);*/
+	
+	/*GetWorld()->GetTimerManager().SetTimer(LetterTimer, [&]
 	{
 		Segments.Empty();
 		if (!bPersistentLog)
@@ -157,7 +191,7 @@ void UDialogueTextBlock::Reset()
 		bHasFinishedPlaying = true;
 
 		SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-	} , 0.00001f, false);
+	} , 0.00001f, false);*/
 }
 
 void UDialogueTextBlock::SkipToLineEnd()
