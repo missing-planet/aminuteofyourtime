@@ -24,6 +24,9 @@ class AMINUTEOFYOURTIME_API ACardPlayerState : public APlayerState, public IPlay
 
 public:
 
+	UPROPERTY(BlueprintReadOnly)
+	UDeckObjectBase* PlayerDeck;
+
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UCardDataRuntime*> PlayerHand;
 
@@ -49,6 +52,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetActionPoints(int32 Amount);
+
+	UFUNCTION(BlueprintCallable)
+	void SetDeck(UDeckObjectBase* Deck) { PlayerDeck = Deck; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UDeckObjectBase* GetDeck() const { return PlayerDeck; }
 
 	UFUNCTION(BlueprintCallable)
 	static void HandleSinkForSpendCard(UUserWidget* UserWidget, ECardHandleMethod HandleMethod, float Delay)

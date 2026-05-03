@@ -19,9 +19,9 @@ class IStoryChoiceInterface
 	GENERATED_BODY()
 
 public:
-
+	
 	UFUNCTION(BlueprintImplementableEvent)
-	void SetText(const FText& Text);
+	void SetText(const FText& Text, const TArray<FString>& Tags);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetChoiceIndex(int32 Index);
