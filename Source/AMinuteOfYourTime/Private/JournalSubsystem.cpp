@@ -137,7 +137,7 @@ int32 UJournalSubsystem::GetPageCount() const
 	return 0;
 }
 
-bool UJournalSubsystem::IsPageFinalEventHandler(const UUserWidget* Page)
+bool UJournalSubsystem::IsPageFinalEventHandler(const UUserWidget* Page) const
 {
 	if (Journal.GetObject())
 		return IJournalInterface::Execute_IsPageFinalEventHandler(Journal.GetObject(), Page);
@@ -152,7 +152,14 @@ bool UJournalSubsystem::IsPageActive(const UUserWidget* Page)
 	TArray<UUserWidget*> Pages = GetPages();
 	if (Pages.Last() == Page) return true;
 
-	if (GetPageCount() % 2 == 1 && GetPageCount() > 1 && Pages[GetPageCount() - 2] == Page) return true;
+	if (GetPageCount() % 2 == 0 && GetPageCount() > 1 && Pages[GetPageCount() - 2] == Page) return true;
+
+	return false;
+}
+
+bool UJournalSubsystem::IsOpen() const
+{
+	if (Journal.GetObject()) return IJournalInterface::Execute_IsOpen(Journal.GetObject());
 
 	return false;
 }

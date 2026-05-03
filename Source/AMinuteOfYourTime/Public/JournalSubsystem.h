@@ -53,6 +53,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	bool IsPageFinalEventHandler(const UUserWidget* Page);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	bool IsOpen();
 };
 
 UCLASS()
@@ -111,10 +114,13 @@ public:
 	int32 GetPageCount() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool IsPageFinalEventHandler(const UUserWidget* Page);
+	bool IsPageFinalEventHandler(const UUserWidget* Page) const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsPageActive(const UUserWidget* Page);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsOpen() const;
 
 private:
 
