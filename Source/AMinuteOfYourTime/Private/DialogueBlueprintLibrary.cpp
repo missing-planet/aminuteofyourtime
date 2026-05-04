@@ -33,3 +33,15 @@ FPortraitMapping UDialogueBlueprintLibrary::GetPortraitFromTag(const UDataTable*
 
 	return FPortraitMapping();
 }
+
+static bool bLastExchangeResult = false;
+
+void UDialogueBlueprintLibrary::SetLastExchangeResult(bool bAccepted)
+{
+	bLastExchangeResult = bAccepted;
+}
+
+bool UDialogueBlueprintLibrary::GetLastExchangeResult()
+{
+	return bLastExchangeResult;
+}

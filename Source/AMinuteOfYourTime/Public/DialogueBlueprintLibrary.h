@@ -22,4 +22,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FPortraitMapping GetPortraitFromTag(const UDataTable* PortraitMap, const FString& Tag);
+
+	UFUNCTION(BlueprintCallable)
+	static void SetLastExchangeResult(bool bAccepted);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static bool GetLastExchangeResult();
 };

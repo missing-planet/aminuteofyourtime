@@ -38,6 +38,9 @@ public:
 	bool AddItemToInventory(FName ItemID, UDataTable* ItemSet);
 
 	UFUNCTION(BlueprintCallable)
+	bool AddExistingItemToInventory(const FInventoryItem& Item);
+
+	UFUNCTION(BlueprintCallable)
 	bool AddItemsToInventory(const TArray<FName>& ItemIDs, UDataTable* ItemSet);
 
 	UFUNCTION(BlueprintCallable)

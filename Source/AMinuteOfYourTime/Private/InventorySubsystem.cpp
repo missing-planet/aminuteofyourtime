@@ -16,6 +16,12 @@ bool UInventorySubsystem::AddItemToInventory(FName ItemID, UDataTable* ItemSet)
 	return false;
 }
 
+bool UInventorySubsystem::AddExistingItemToInventory(const FInventoryItem& Item)
+{
+	InventoryItems.Add(Item);
+	return true;
+}
+
 bool UInventorySubsystem::AddItemsToInventory(const TArray<FName>& ItemIDs, UDataTable* ItemSet)
 {
 	if (!ItemSet) return false;
