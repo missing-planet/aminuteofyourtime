@@ -150,3 +150,30 @@ TArray<UCardDataRuntime*> UDeckObjectBase::GetCards(bool IncludeOutOfDeck, bool 
 
 	return OutCards;
 }
+
+int32 UDeckObjectBase::CardCountOfName(const FText& Name, bool IncludeOutOfDeck, bool IncludeDiscard)
+{
+	int32 Result = 0;
+	for (auto Card : Cards)
+	{
+		if (Card && Card->CardName.EqualTo(Name)) ++Result; 
+	}
+
+	if (IncludeOutOfDeck)
+	{
+		for (auto Card : OutOfDeckCards)
+		{
+			if (Card && Card->CardName.EqualTo(Name)) ++Result; 
+		}
+	}
+
+	if (IncludeDiscard && DiscardDeck)
+	{
+		for (auto Card : DiscardDeck->Cards)
+		{
+			if (Card && Card->CardName.EqualTo(Name)) ++Result; 
+		}
+	}
+
+	return Result;
+}

@@ -68,6 +68,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<UCardDataRuntime*> GetCards(bool IncludeOutOfDeck, bool IncludeDiscard);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 CardCountOfName(const FText& Name, bool IncludeOutOfDeck, bool IncludeDiscard);
+
 private:
 
 	int32 CardCount = 0;
