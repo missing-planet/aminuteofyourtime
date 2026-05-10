@@ -62,7 +62,7 @@ protected:
 	void OnMakeChoice(UInkpotStory* Story, UInkpotChoice* Choice);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void OnEntryGenerated(UUserWidget* Widget);
+	void OnEntryGenerated(const UObject* Item, UUserWidget* Widget);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void UpdateTextWidget(UInkpotStory* Story);
@@ -129,7 +129,7 @@ private:
 	void OnContinue_Implementation(UInkpotStory* Story);
 	void OnMakeChoice_Implementation(UInkpotStory* Story, UInkpotChoice* Choice);
 
-	void OnEntryGenerated_Implementation(UUserWidget* Widget);
+	void OnEntryGenerated_Implementation(const UObject* Item, UUserWidget* Widget);
 
 	void UpdateTextWidget_Implementation(UInkpotStory* Story);
 	bool UpdateChoicesView_Implementation(UInkpotStory* Story);

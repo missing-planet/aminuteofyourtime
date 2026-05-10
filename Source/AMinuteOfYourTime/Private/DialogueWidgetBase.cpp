@@ -163,11 +163,11 @@ void UDialogueWidgetBase::OnMakeChoice_Implementation(UInkpotStory* Story, UInkp
 	UpdateChoicesView(Story);
 }
 
-void UDialogueWidgetBase::OnEntryGenerated_Implementation(UUserWidget* Widget)
+void UDialogueWidgetBase::OnEntryGenerated_Implementation(const UObject* Item, UUserWidget* Widget)
 {
 	check(LV_Choices);
-	auto& EntryWidgets = LV_Choices->GetDisplayedEntryWidgets();
-	int32 Index = EntryWidgets.Find(Widget);
+	int32 Index = LV_Choices->GetIndexForItem(Item);
+	check(Index >= 0);
 	UInkpotChoice* Choice = CachedStory->GetCurrentChoices()[Index];
 	
 	IStoryChoiceInterface::Execute_Reset(Widget);
