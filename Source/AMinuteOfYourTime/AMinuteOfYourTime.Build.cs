@@ -10,7 +10,7 @@ public class AMinuteOfYourTime : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "FCTween", "Inkpot" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "Inkpot", "FMODStudio" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "Inkpot", "FMODStudio", "UMG", "RenderCore" });
 
 		// Uncomment if you are using Slate UI
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore", "PropertyEditor", "UnrealEd" });

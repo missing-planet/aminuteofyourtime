@@ -3,6 +3,9 @@
 
 #include "DialogueBlueprintLibrary.h"
 
+#include "Components/Widget.h"
+#include "Slate/WidgetRenderer.h"
+
 float UDialogueBlueprintLibrary::GetParameterValueFromLetter(const FString& Letter)
 {
 	if (Letter.IsEmpty()) return -1.f;
@@ -44,4 +47,36 @@ void UDialogueBlueprintLibrary::SetLastExchangeResult(bool bAccepted)
 bool UDialogueBlueprintLibrary::GetLastExchangeResult()
 {
 	return bLastExchangeResult;
+}
+
+bool UDialogueBlueprintLibrary::DrawWidgetToTarget(UTextureRenderTarget2D* Target, UWidget* WidgetToRender,
+	FVector2D DrawSize, bool UseGamma, TextureFilter Filter, float DeltaTime)
+{
+	// From https://github.com/pafuhana1213/RenderWidgetToTarget
+	if (!WidgetToRender)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DrawWidgetToTarget Fail : WidgetToRender is empty!"));
+		return false;
+	}
+	if (DrawSize.X < 0 || DrawSize.Y < 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DrawWidgetToTarget Fail : DrawSize is 0 or less!"));
+		return false;
+	}
+	if (!Target)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DrawWidgetToTarget Fail : Target is empty!"));
+		return false;
+	}
+
+	FWidgetRenderer* WidgetRenderer = new FWidgetRenderer(true, false);
+	check(WidgetRenderer);
+
+	TSharedRef<SWidget> ref = WidgetToRender->TakeWidget();
+	WidgetRenderer->DrawWidget(Target, ref, DrawSize, DeltaTime);
+	FlushRenderingCommands();
+
+	BeginCleanup(WidgetRenderer);
+
+	return true;
 }
