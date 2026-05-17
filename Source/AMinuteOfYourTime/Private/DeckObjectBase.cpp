@@ -22,7 +22,6 @@ void UDeckObjectBase::Initialize(UDeckDataBase* DeckData, FName Name, bool Shuff
 			Cards.Push(NewCard);
 			CardCount++;
 		}
-		//NewCard->AddToRoot();
 	}
 
 	if (Shuffle) this->Shuffle();
@@ -50,8 +49,7 @@ int UDeckObjectBase::DrawCards(int Count, TArray<UCardDataRuntime*>& OutCardList
 		if (Cards.IsEmpty()) continue;
 		
 		TObjectPtr<UCardDataRuntime> Card = Cards.Pop();
-
-		//Card->RemoveFromRoot();
+		
 		OutCardList.Add(Card);
 		OutOfDeckCards.Add(Card);
 		ReturnCount++;
@@ -69,8 +67,7 @@ void UDeckObjectBase::AddCard(UCardDataRuntime* Card)
 	if (!Card) return;
 	
 	Cards.Push(Card);
-	//Card->AddToRoot();
-	if (OutOfDeckCards.Contains(Card)) OutOfDeckCards.Remove(Card);
+	if (OutOfDeckCards.Contains(Card)) OutOfDeckCards.RemoveSingle(Card);
 
 	CardCount++;
 	DeckCountChangeEvent.Broadcast(1);
@@ -84,6 +81,25 @@ void UDeckObjectBase::AddCards(const TArray<UCardDataRuntime*>& CardList)
 	}
 }
 
+void UDeckObjectBase::RemoveCard(UCardDataRuntime* Card)
+{
+	if (!Card) return;
+	
+	uint32 Removed = Cards.RemoveSingle(Card);
+	if (OutOfDeckCards.Contains(Card)) OutOfDeckCards.RemoveSingle(Card);
+
+	CardCount -= Removed;
+	DeckCountChangeEvent.Broadcast(Removed);
+}
+
+void UDeckObjectBase::RemoveCards(const TArray<UCardDataRuntime*>& CardList)
+{
+	for (UCardDataRuntime* card : CardList)
+	{
+		RemoveCard(card);
+	}
+}
+
 void UDeckObjectBase::Shuffle()
 {
 	TArray<UCardDataRuntime*> CardList;
@@ -91,7 +107,6 @@ void UDeckObjectBase::Shuffle()
 	while (!Cards.IsEmpty())
 	{
 		TObjectPtr<UCardDataRuntime> Card = Cards.Pop();
-		//Card->RemoveFromRoot();
 		CardList.Add(std::move(Card));
 	}
 
@@ -105,7 +120,6 @@ void UDeckObjectBase::Shuffle()
 	for (int i = 0; i < CardList.Num(); ++i)
 	{
 		Cards.Push(std::move(CardList[i]));
-		//CardList[i]->AddToRoot();
 	}
 }
 
@@ -135,4 +149,31 @@ TArray<UCardDataRuntime*> UDeckObjectBase::GetCards(bool IncludeOutOfDeck, bool 
 	}
 
 	return OutCards;
+}
+
+int32 UDeckObjectBase::CardCountOfName(const FText& Name, bool IncludeOutOfDeck, bool IncludeDiscard)
+{
+	int32 Result = 0;
+	for (auto Card : Cards)
+	{
+		if (Card && Card->CardName.EqualTo(Name)) ++Result; 
+	}
+
+	if (IncludeOutOfDeck)
+	{
+		for (auto Card : OutOfDeckCards)
+		{
+			if (Card && Card->CardName.EqualTo(Name)) ++Result; 
+		}
+	}
+
+	if (IncludeDiscard && DiscardDeck)
+	{
+		for (auto Card : DiscardDeck->Cards)
+		{
+			if (Card && Card->CardName.EqualTo(Name)) ++Result; 
+		}
+	}
+
+	return Result;
 }

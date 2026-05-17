@@ -57,13 +57,15 @@ public:
 	UCardDataRuntime() = default;
 
 	UCardDataRuntime(const UCardDataBase& CardData)
-		: ActionPointCost(CardData.ActionPointCost)
+		: CardDataAsset(&CardData)
+		, ActionPointCost(CardData.ActionPointCost)
 		, CardName(CardData.CardName)
 		, CardDescription(CardData.CardDescription)
 		, CardType(CardData.CardType)
 		, Card(CardData.Card)
 		, DestroyChance(CardData.DestroyChance)
-		, OwningDeck(CardData.OwningDeck) {}
+		, OwningDeck(CardData.OwningDeck)
+	{}
 
 	UFUNCTION(BlueprintCallable)
 	void Initialize(const UCardDataBase* CardData)
@@ -77,7 +79,11 @@ public:
 		Card = CardData->Card;
 		DestroyChance = CardData->DestroyChance;
 		OwningDeck = CardData->OwningDeck;
+		CardDataAsset = CardData;
 	}
+
+	UPROPERTY(BlueprintReadOnly)
+	const UCardDataBase* CardDataAsset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 ActionPointCost;

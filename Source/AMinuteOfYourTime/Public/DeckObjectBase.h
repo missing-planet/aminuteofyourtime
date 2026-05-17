@@ -51,6 +51,12 @@ public:
 	void AddCards(const TArray<UCardDataRuntime*>& CardList);
 
 	UFUNCTION(BlueprintCallable)
+	void RemoveCard(UCardDataRuntime* Card);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveCards(const TArray<UCardDataRuntime*>& CardList);
+
+	UFUNCTION(BlueprintCallable)
 	void Shuffle();
 
 	UFUNCTION(BlueprintCallable)
@@ -61,6 +67,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	TArray<UCardDataRuntime*> GetCards(bool IncludeOutOfDeck, bool IncludeDiscard);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 CardCountOfName(const FText& Name, bool IncludeOutOfDeck, bool IncludeDiscard);
 
 private:
 

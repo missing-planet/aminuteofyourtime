@@ -8,7 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChoiceSelectedSignature, int32, Index);
 
-UINTERFACE(BlueprintType)
+UINTERFACE(BlueprintType, Blueprintable)
 class UStoryChoiceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -19,19 +19,19 @@ class IStoryChoiceInterface
 	GENERATED_BODY()
 
 public:
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetText(const FText& Text, const TArray<FString>& Tags);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetText(const FText& Text);
-
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetChoiceIndex(int32 Index);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	int32 GetChoiceIndex();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetChoiceParent(UWidget* Parent);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void Reset();
 };

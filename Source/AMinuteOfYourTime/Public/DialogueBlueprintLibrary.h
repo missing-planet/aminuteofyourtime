@@ -7,6 +7,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "DialogueBlueprintLibrary.generated.h"
 
+class UWidget;
+
 UCLASS(Blueprintable)
 class AMINUTEOFYOURTIME_API UDialogueBlueprintLibrary : public UBlueprintFunctionLibrary
 {
@@ -22,4 +24,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FPortraitMapping GetPortraitFromTag(const UDataTable* PortraitMap, const FString& Tag);
+
+	UFUNCTION(BlueprintCallable)
+	static void SetLastExchangeResult(bool bAccepted);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static bool GetLastExchangeResult();
+
+	UFUNCTION(BlueprintCallable)
+	static bool DrawWidgetToTarget(UTextureRenderTarget2D * Target, UWidget* WidgetToRender, FVector2D DrawSize, bool UseGamma, TextureFilter Filter, float DeltaTime);
 };

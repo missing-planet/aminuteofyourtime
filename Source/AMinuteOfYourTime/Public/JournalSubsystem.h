@@ -43,13 +43,25 @@ public:
 	void NavigateBack();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void SetCanSkip(bool bCanSkip);
+	void EnableNavigation(bool bAllowNavigation);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetCanSkip(bool bCanSkip, UObject* LockedBy = nullptr);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetHoldOpen(bool bHoldOpen);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	bool GetHoldOpen();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	int32 GetPageCount();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	bool IsPageFinalEventHandler(const UUserWidget* Page);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	bool IsOpen();
 };
 
 UCLASS()
@@ -90,7 +102,16 @@ public:
 	void NavigateBack();
 
 	UFUNCTION(BlueprintCallable)
-	void SetCanSkip(bool bCanSkip);
+	void EnableNavigation(bool bAllowNavigation);
+
+	UFUNCTION(BlueprintCallable)
+	void SetCanSkip(bool bCanSkip, UObject* LockedBy = nullptr);
+
+	UFUNCTION(BlueprintCallable)
+	void SetHoldOpen(bool bHoldOpen);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool GetHoldOpen();
 
 	UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = "InType"))
 	UObject* PushPageAndStartPath(TSubclassOf<UUserWidget> InType, const FString& Path);
@@ -105,7 +126,13 @@ public:
 	int32 GetPageCount() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool IsPageFinalEventHandler(const UUserWidget* Page);
+	bool IsPageFinalEventHandler(const UUserWidget* Page) const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsPageActive(const UUserWidget* Page);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsOpen() const;
 
 private:
 

@@ -84,9 +84,26 @@ void UJournalSubsystem::NavigateBack()
 	if (Journal.GetObject()) IJournalInterface::Execute_NavigateBack(Journal.GetObject());
 }
 
-void UJournalSubsystem::SetCanSkip(bool bCanSkip)
+void UJournalSubsystem::EnableNavigation(bool bAllowNavigation)
 {
-	if (Journal.GetObject()) IJournalInterface::Execute_SetCanSkip(Journal.GetObject(), bCanSkip);
+	if (Journal.GetObject()) IJournalInterface::Execute_EnableNavigation(Journal.GetObject(), bAllowNavigation);
+}
+
+void UJournalSubsystem::SetCanSkip(bool bCanSkip, UObject* LockedBy)
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_SetCanSkip(Journal.GetObject(), bCanSkip, LockedBy);
+}
+
+void UJournalSubsystem::SetHoldOpen(bool bHoldOpen)
+{
+	if (Journal.GetObject()) IJournalInterface::Execute_SetHoldOpen(Journal.GetObject(), bHoldOpen);
+}
+
+bool UJournalSubsystem::GetHoldOpen()
+{
+	if (Journal.GetObject()) return IJournalInterface::Execute_GetHoldOpen(Journal.GetObject());
+
+	return false;
 }
 
 UObject* UJournalSubsystem::PushPageAndStartPath(TSubclassOf<UUserWidget> InType, const FString& Path)
@@ -132,10 +149,29 @@ int32 UJournalSubsystem::GetPageCount() const
 	return 0;
 }
 
-bool UJournalSubsystem::IsPageFinalEventHandler(const UUserWidget* Page)
+bool UJournalSubsystem::IsPageFinalEventHandler(const UUserWidget* Page) const
 {
 	if (Journal.GetObject())
 		return IJournalInterface::Execute_IsPageFinalEventHandler(Journal.GetObject(), Page);
+
+	return false;
+}
+
+bool UJournalSubsystem::IsPageActive(const UUserWidget* Page)
+{
+	if (!Page || GetPageCount() <= 0) return false;
+
+	TArray<UUserWidget*> Pages = GetPages();
+	if (Pages.Last() == Page) return true;
+
+	if (GetPageCount() % 2 == 0 && GetPageCount() > 1 && Pages[GetPageCount() - 2] == Page) return true;
+
+	return false;
+}
+
+bool UJournalSubsystem::IsOpen() const
+{
+	if (Journal.GetObject()) return IJournalInterface::Execute_IsOpen(Journal.GetObject());
 
 	return false;
 }

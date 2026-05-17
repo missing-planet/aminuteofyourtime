@@ -11,8 +11,8 @@
 #include "CardPlayerState.generated.h"
 
 UDELEGATE(BlueprintCallable)
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FHandChangedSignature, const TArray<UCardDataRuntime*>&, Hand,
-	FVector2D, DrawLocation, int32, HandDelta, float, Delay);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FHandChangedSignature, const TArray<UCardDataRuntime*>&, Hand,
+	FVector2D, DrawLocation, int32, HandDelta, float, Delay, bool, Animate);
 
 UDELEGATE(BlueprintCallable)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActionPointsChangedSignature, int32, ActionPoints);
@@ -23,6 +23,9 @@ class AMINUTEOFYOURTIME_API ACardPlayerState : public APlayerState, public IPlay
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(BlueprintReadOnly)
+	UDeckObjectBase* PlayerDeck;
 
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UCardDataRuntime*> PlayerHand;
@@ -51,6 +54,12 @@ public:
 	void SetActionPoints(int32 Amount);
 
 	UFUNCTION(BlueprintCallable)
+	void SetDeck(UDeckObjectBase* Deck) { PlayerDeck = Deck; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UDeckObjectBase* GetDeck() const { return PlayerDeck; }
+
+	UFUNCTION(BlueprintCallable)
 	static void HandleSinkForSpendCard(UUserWidget* UserWidget, ECardHandleMethod HandleMethod, float Delay)
 	{
 		if (!UserWidget) return;
@@ -70,7 +79,9 @@ public:
 		}
 	}
 
-	virtual void AddCard_Implementation(UCardDataRuntime* Card, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
+	virtual void AddCard_Implementation(UCardDataRuntime* Card, FVector2D DrawLocation, float Delay,
+		bool Broadcast = true, bool Animate = true) override;
 	virtual void RemoveCard_Implementation(UCardDataRuntime* Card, bool Broadcast = true) override;
-	virtual void AddCards_Implementation(const TArray<UCardDataRuntime*>& Cards, FVector2D DrawLocation, float Delay, bool Broadcast = true) override;
+	virtual void AddCards_Implementation(const TArray<UCardDataRuntime*>& Cards, FVector2D DrawLocation, float Delay,
+		bool Broadcast = true, bool Animate = true) override;
 };

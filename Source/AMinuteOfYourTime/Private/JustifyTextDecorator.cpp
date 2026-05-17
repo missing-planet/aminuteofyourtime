@@ -57,7 +57,7 @@ public:
 
 			FTextBlockStyle RunStyle = Owner.IsValid()
 				? Owner->GetCurrentDefaultTextStyle()
-				: FCoreStyle::Get().GetWidgetStyle<FTextBlockStyle>("Default");
+				: Style->GetWidgetStyle<FTextBlockStyle>("NormalText");
 
 			return FSlateTextRun::Create(
 				FRunInfo(RunParseResult.Name),
