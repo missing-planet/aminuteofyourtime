@@ -4,64 +4,26 @@
 #include "EventDescriptionRow.h"
 
 #include "EventProbabilityRow.h"
+#include "StoryEventBase.h"
 #include "StoryEventInterface.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 
-UObject* UBlueprintEventFunctionLibrary::GetEvent(const FEventDescriptionRow& EventDescription, bool& Result)
+TScriptInterface<IStoryEventInterface> UBlueprintEventFunctionLibrary::GetEvent(FEventDescriptionRow EventDescription,
+	bool& Result)
 {
-	auto* Event = EventDescription.EventClass.GetDefaultObject();
-
-	if (!Event || !Event->Implements<UStoryEventInterface>())
+	if (!EventDescription.EventClass)
 	{
 		Result = false;
 		return nullptr;
 	}
+	
+	UObject* DefaultObj = EventDescription.EventClass->GetDefaultObject();
+
+	TScriptInterface<IStoryEventInterface> InterfaceWrapper;
+	InterfaceWrapper.SetObject(DefaultObj);
+	InterfaceWrapper.SetInterface(Cast<IStoryEventInterface>(DefaultObj));
 
 	Result = true;
-	return Event;
-}
-
-FEventDescriptionRow UBlueprintEventFunctionLibrary::GetEventForTime(const UDataTable* EventData, FDateTimePair DateTime)
-{
-	if (!EventData)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Null Event table passed to GetEventForTime!"));
-		return FEventDescriptionRow();
-	}
-
-	TArray<FEventDescriptionRow*> OutRows;
-	EventData->GetAllRows<FEventDescriptionRow>(FString("Get Event For Time"), OutRows);
-	for (const auto EventDescription : OutRows)
-	{
-		if (!EventDescription) continue;
-
-		if (!EventDescription->EventTimes.Contains(DateTime)) continue;
-
-		return *EventDescription;
-	}
-
-	return FEventDescriptionRow();
-}
-
-TArray<FEventDescriptionRow> UBlueprintEventFunctionLibrary::GetEventsForTime(const UDataTable* EventData,
-	FDateTimePair DateTime)
-{
-	if (!EventData)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Null Event table passed to GetEventForTime!"));
-		return {};
-	}
-
-	TArray<FEventDescriptionRow*> OutRows;
-	TArray<FEventDescriptionRow> Result;
-	EventData->GetAllRows<FEventDescriptionRow>(FString("Get Event For Time"), OutRows);
-	for (FEventDescriptionRow* Row : OutRows)
-	{
-		if (Row && (Row->EventTimes.IsEmpty() || Row->EventTimes.Contains(DateTime)))
-			Result.AddUnique(*Row);
-	}
-
-	return Result;
+	return InterfaceWrapper;
 }
 
 TArray<EventType> UBlueprintEventFunctionLibrary::GetUniqueEventTypes(const TArray<FEventDescriptionRow>& Events)
@@ -75,23 +37,31 @@ TArray<EventType> UBlueprintEventFunctionLibrary::GetUniqueEventTypes(const TArr
 	return Result;
 }
 
-TMap<EventType, float> UBlueprintEventFunctionLibrary::GetEventProbabilitiesForDay(const UDataTable* EventData, const FDateTimePair& DateTime)
+TArray<FEventDescriptionRow> UBlueprintEventFunctionLibrary::GetAllowedEvents(const UDataTable* EventData)
 {
-	if (!EventData)
+	if (!EventData) return {};
+	TArray<FEventDescriptionRow> Results;
+	
+	TArray<FEventDescriptionRow*> Events;
+	EventData->GetAllRows(TEXT("UBlueprintEventFunctionLibrary::GetAllowedEvents"), Events);
+	for (const FEventDescriptionRow* EventDescription : Events)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Null Event table passed to GetEventProbabilitiesForDay!"));
-		return {};
+		if (!EventDescription) continue;
+		
+		bool bAllowed = true;
+		for (TSubclassOf<UEventConditionBase> ConditionClass : EventDescription->EventConditions)
+		{
+			if (!ConditionClass.GetDefaultObject()->CheckAvailability())
+			{
+				bAllowed = false;
+				break;
+			}
+		}
+
+		if (bAllowed) Results.AddUnique(*EventDescription);
 	}
 
-	TArray<FEventProbabilityRow*> OutRows;
-	EventData->GetAllRows<FEventProbabilityRow>(FString("Get Event Probabilities"), OutRows);
-	for (FEventProbabilityRow* Row : OutRows)
-	{
-		if (Row && Row->Timeslot.Day == DateTime.Day) return Row->Probabilities;
-	}
-
-	UE_LOG(LogTemp, Error, TEXT("No overridden probabilities for Day %i found!"), DateTime.Day);
-	return {};
+	return Results;
 }
 
 TArray<FEventDescriptionRow> UBlueprintEventFunctionLibrary::FilterEventsByType(

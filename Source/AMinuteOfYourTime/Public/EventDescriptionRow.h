@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include <Components/Widget.h>
-
 #include "CoreMinimal.h"
+#include "EventConditionBase.h"
 #include "EventType.h"
-#include "Runtime/UMG/Public/Blueprint/UserWidget.h"
-#include "Timeslot.h"
 #include "EventDescriptionRow.generated.h"
+
+class UStoryEventBase;
+class IStoryEventInterface;
 
 USTRUCT()
 struct FEventDescriptionRow : public FTableRowBase 
@@ -28,13 +28,13 @@ struct FEventDescriptionRow : public FTableRowBase
 	EventType EventType = EventType::Other;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FDateTimePair> EventTimes;
+	TArray<TSubclassOf<UEventConditionBase>> EventConditions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FSlateBrush EventImage = FSlateBrush();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UObject> EventClass;
+	TSubclassOf<UStoryEventBase> EventClass;
 
 	bool operator==(const FEventDescriptionRow& other) const
 	{
@@ -49,20 +49,14 @@ class UBlueprintEventFunctionLibrary : public UBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static UObject* GetEvent(const FEventDescriptionRow& EventDescription, bool& Result);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FEventDescriptionRow GetEventForTime(const UDataTable* EventData, FDateTimePair DateTime);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static TArray<FEventDescriptionRow> GetEventsForTime(const UDataTable* EventData, FDateTimePair DateTime);
-
+	static TScriptInterface<IStoryEventInterface> GetEvent(FEventDescriptionRow EventDescription, bool& Result);
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static TArray<EventType> GetUniqueEventTypes(const TArray<FEventDescriptionRow>& Events);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static TMap<EventType, float> GetEventProbabilitiesForDay(const UDataTable* EventData, const FDateTimePair& DateTime);
-
+	static TArray<FEventDescriptionRow> GetAllowedEvents(const UDataTable* EventData);
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static TArray<FEventDescriptionRow> FilterEventsByType(const TArray<FEventDescriptionRow>& Events, EventType Type);
 };
