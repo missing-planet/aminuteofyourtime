@@ -34,10 +34,10 @@ public:
 	int32 MaxHandSize = 999;
 
 	UPROPERTY(BlueprintReadWrite)
-	int32 ActionPoints = 3;
+	int32 ActionPoints = 10;
 
 	UPROPERTY(BlueprintReadWrite)
-	int32 MaxActionPoints = 12;
+	int32 MaxActionPoints = 10;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FHandChangedSignature HandChangedEvent;

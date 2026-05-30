@@ -4,6 +4,7 @@
 #include "JournalSubsystem.h"
 
 #include "InkStorySubsystem.h"
+#include "JournalWidgetNativeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -18,6 +19,16 @@ UJournalSubsystem* UJournalSubsystem::GetJournalSubsystem(UObject* WorldContext)
 void UJournalSubsystem::SetJournalWidget(TScriptInterface<IJournalInterface> InJournal)
 {
 	Journal = InJournal;	
+}
+
+UJournalWidgetNativeBase* UJournalSubsystem::GetJournalWidget()
+{
+	if (Journal.GetObject())
+	{
+		return Cast<UJournalWidgetNativeBase>(Journal.GetObject());
+	}
+
+	return nullptr;
 }
 
 UObject* UJournalSubsystem::PushPage(TSubclassOf<UUserWidget> PageType)
@@ -174,4 +185,9 @@ bool UJournalSubsystem::IsOpen() const
 	if (Journal.GetObject()) return IJournalInterface::Execute_IsOpen(Journal.GetObject());
 
 	return false;
+}
+
+void UJournalSubsystem::ReversePageDrawOrder()
+{
+	if (Journal.GetObject()) return IJournalInterface::Execute_ReversePageDrawOrder(Journal.GetObject());
 }

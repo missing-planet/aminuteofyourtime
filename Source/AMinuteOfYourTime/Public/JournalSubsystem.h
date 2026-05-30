@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "JournalSubsystem.generated.h"
 
+class UJournalWidgetNativeBase;
+
 UINTERFACE(MinimalAPI, Blueprintable)
 class UJournalInterface : public UInterface
 {
@@ -62,6 +64,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	bool IsOpen();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ReversePageDrawOrder();
 };
 
 UCLASS()
@@ -76,6 +81,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetJournalWidget(TScriptInterface<IJournalInterface> InJournal);
+
+	UFUNCTION(BlueprintCallable)
+	UJournalWidgetNativeBase* GetJournalWidget();
 
 	UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = "PageType"))
 	UObject* PushPage(TSubclassOf<UUserWidget> PageType);
@@ -133,6 +141,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsOpen() const;
+
+	UFUNCTION(BlueprintCallable)
+	void ReversePageDrawOrder();
 
 private:
 

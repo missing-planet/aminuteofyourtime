@@ -5,9 +5,8 @@ enum class EventType : uint8
 {
 	Lore,
 	Exchange,
-	Evidence,
-	Clues,
-	Other,
+	Clue,
+	Other UMETA(DisplayName = "???"),
 	
 	Count UMETA(Hidden)
 };
