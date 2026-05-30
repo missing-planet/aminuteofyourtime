@@ -42,7 +42,7 @@ const TArray<FCardAbilityData> GCardAbilityData = {
 			ECard::Nose
 		},
 		FText::FromString("Nose"),
-		FText::FromString("Destroys a basic card, Increase Blackmail by 15%"),
+		FText::FromString("Destroys a basic card, Increase ??? by 15%"),
 		0,
 		0,
 		EAbilityType::Ritual
