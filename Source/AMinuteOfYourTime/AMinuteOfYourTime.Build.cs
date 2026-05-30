@@ -8,7 +8,10 @@ public class AMinuteOfYourTime : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "FCTween", "Inkpot" });
+		PublicDependencyModuleNames.AddRange(new string[]
+		{
+			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "FCTween", "Inkpot", "DeveloperSettings"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "Inkpot", "FMODStudio", "UMG", "RenderCore" });
 
