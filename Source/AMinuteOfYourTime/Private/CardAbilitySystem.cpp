@@ -25,7 +25,42 @@ const TArray<FCardAbilityData> GCardAbilityData = {
 		1,
 		1,
 		EAbilityType::Ritual
+	},
+	{
+		{
+			ECard::Foot
+		},
+		FText::FromString("Foot"),
+		FText::FromString("Increase AP Pool by 2"),
+		0,
+		0,
+		EAbilityType::Ritual
+	},
+
+	{
+		{
+			ECard::Nose
+		},
+		FText::FromString("Nose"),
+		FText::FromString("Destroys a basic card, Increase Blackmail by 15%"),
+		0,
+		0,
+		EAbilityType::Ritual
+	},
+
+	{
+		{
+			ECard::BrianMatters
+		},
+		FText::FromString("Brain"),
+		FText::FromString("Double your AP Pool for the day."),
+		0,
+		0,
+		EAbilityType::Ritual
+
 	}
+
+
 };
 
 UCardAbilitySystem* UCardAbilitySystem::GetCardAbilitySystem(UObject* WorldContext)
