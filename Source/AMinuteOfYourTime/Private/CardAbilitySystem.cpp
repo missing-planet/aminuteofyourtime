@@ -23,7 +23,7 @@ const TArray<FCardAbilityData> GCardAbilityData = {
 		FText::FromString("Bone"),
 		FText::FromString("Offer another Card with this one, decrease the Destroy chance of that Card by 10%."),
 		1,
-		6,
+		1,
 		EAbilityType::Ritual
 	},
 	{
